@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    {% block foo %}something{% endblock %}
+
+    {% block content %}
+        {% if foo
+            <p>bar</p>
+        {% else %}
+            <p>bar {{ baz|funnyNonStandardFilter }}</p>
+        {% endif %}
+    {% endblock %}
+</body>
+</html>
+
