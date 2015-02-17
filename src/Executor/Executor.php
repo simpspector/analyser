@@ -49,7 +49,7 @@ class Executor implements ExecutorInterface
             $logger->writeln("------------------------------------");
             $logger->writeln();
 
-            $logger->writeln(sprintf('run gadget "%s"', $gadget));
+            $logger->writeln(sprintf('run gadget "%s"', $type));
             $logger->writeln();
             $logger->writeln();
 
