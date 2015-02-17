@@ -1,9 +1,12 @@
 {
-    "name": "simpspector/anaylser",
+    "name": "simpspector/analyser",
     "type": "lib",
     "description": "SimpSpector Analyser",
     "autoload": {
         "psr-4": {"SimpSpector\\Analyser\\": "src/"}
+    },
+    "dev-autoload": {
+        "psr-4": {"SimpSpector\\Analyser\\Tests\\": "tests/"}
     },
     "require": {
         "php": ">=5.4",
