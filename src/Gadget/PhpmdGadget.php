@@ -65,7 +65,7 @@ class PhpmdGadget extends AbstractGadget
             $violations = (isset($file['violation'][0])) ? $file['violation'] : [$file['violation']];
 
             foreach ($violations as $violation) {
-                $result->addIssue($this->createIssue($path, $file['@name'], $violation));
+                $result->addIssue($this->createIssue($file['@name'], $violation));
             }
         }
 
@@ -92,15 +92,14 @@ class PhpmdGadget extends AbstractGadget
     }
 
     /**
-     * @param string $path
      * @param string $file
      * @param array $data
      * @return Issue
      */
-    private function createIssue($path, $file, array $data)
+    private function createIssue($file, array $data)
     {
         $issue = new Issue(trim($data['#']), self::NAME, Issue::LEVEL_WARNING);
-        $issue->setFile($this->cleanupFilePath($path, $file));
+        $issue->setFile($file);
         $issue->setLine($data['@beginline']);
 
         $issue->setExtraInformation(

@@ -31,16 +31,16 @@ class TwigLintGadgetTest extends \PHPUnit_Framework_TestCase
         $issues = $gadget->run($path, $config, new NullLogger())->getIssues();
 
         $expectedIssues = [
-            $this->createIssue('Twig_Error_Syntax: Unclosed "block"', 'one_line_error.html.twig', 11, 'error'),
+            $this->createIssue($path, 'Twig_Error_Syntax: Unclosed "block"', 'one_line_error.html.twig', 11, 'error'),
         ];
 
         $this->assertEquals($expectedIssues, $issues);
     }
 
-    private function createIssue($message, $file, $line, $level)
+    private function createIssue($path, $message, $file, $line, $level)
     {
         $issue = new Issue($message, TwigLintGadget::NAME, $level);
-        $issue->setFile($file);
+        $issue->setFile($path . '/' . $file);
         $issue->setLine($line);
 
         return $issue;

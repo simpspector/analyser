@@ -11,10 +11,10 @@ use SimpSpector\Analyser\Logger\NullLogger;
  */
 class FunctionBlacklistGadgetTest extends \PHPUnit_Framework_TestCase
 {
-    private function createIssue($message, $line, $level)
+    private function createIssue($path, $message, $line, $level)
     {
         $issue = new Issue($message, FunctionBlacklistGadget::NAME, $level);
-        $issue->setFile('foo.php');
+        $issue->setFile($path . '/foo.php');
         $issue->setLine($line);
 
         return $issue;
@@ -29,12 +29,12 @@ class FunctionBlacklistGadgetTest extends \PHPUnit_Framework_TestCase
         $issues = $gadget->run($path, $config, new NullLogger())->getIssues();
 
         $expectedIssues = [
-            $this->createIssue('function / statement "echo" is blacklisted', 9, Issue::LEVEL_WARNING),
-            $this->createIssue('function / statement "echo" is blacklisted', 13, Issue::LEVEL_WARNING),
-            $this->createIssue('function / statement "var_dump" is blacklisted', 32, Issue::LEVEL_ERROR),
-            $this->createIssue('function / statement "die/exit" is blacklisted', 37, Issue::LEVEL_ERROR),
-            $this->createIssue('function / statement "die/exit" is blacklisted', 39, Issue::LEVEL_ERROR),
-            $this->createIssue('function / statement "var_dump" is blacklisted', 46, Issue::LEVEL_ERROR),
+            $this->createIssue($path, 'function / statement "echo" is blacklisted', 9, Issue::LEVEL_WARNING),
+            $this->createIssue($path, 'function / statement "echo" is blacklisted', 13, Issue::LEVEL_WARNING),
+            $this->createIssue($path, 'function / statement "var_dump" is blacklisted', 32, Issue::LEVEL_ERROR),
+            $this->createIssue($path, 'function / statement "die/exit" is blacklisted', 37, Issue::LEVEL_ERROR),
+            $this->createIssue($path, 'function / statement "die/exit" is blacklisted', 39, Issue::LEVEL_ERROR),
+            $this->createIssue($path, 'function / statement "var_dump" is blacklisted', 46, Issue::LEVEL_ERROR),
         ];
 
         $this->assertEquals($expectedIssues, $issues);
@@ -49,8 +49,8 @@ class FunctionBlacklistGadgetTest extends \PHPUnit_Framework_TestCase
         $issues = $gadget->run($path, $config, new NullLogger())->getIssues();
 
         $expectedIssues = [
-            $this->createIssue('function / statement "die/exit" is blacklisted', 37, Issue::LEVEL_CRITICAL),
-            $this->createIssue('function / statement "die/exit" is blacklisted', 39, Issue::LEVEL_CRITICAL),
+            $this->createIssue($path, 'function / statement "die/exit" is blacklisted', 37, Issue::LEVEL_CRITICAL),
+            $this->createIssue($path, 'function / statement "die/exit" is blacklisted', 39, Issue::LEVEL_CRITICAL),
         ];
 
         $this->assertEquals($expectedIssues, $issues);
@@ -66,8 +66,8 @@ class FunctionBlacklistGadgetTest extends \PHPUnit_Framework_TestCase
         $issues = $gadget->run($path, $config, new NullLogger())->getIssues();
 
         $expectedIssues = [
-            $this->createIssue('function / statement "die/exit" is blacklisted', 37, Issue::LEVEL_CRITICAL),
-            $this->createIssue('function / statement "die/exit" is blacklisted', 39, Issue::LEVEL_CRITICAL),
+            $this->createIssue($path, 'function / statement "die/exit" is blacklisted', 37, Issue::LEVEL_CRITICAL),
+            $this->createIssue($path, 'function / statement "die/exit" is blacklisted', 39, Issue::LEVEL_CRITICAL),
         ];
 
         $this->assertEquals($expectedIssues, $issues);
@@ -82,7 +82,7 @@ class FunctionBlacklistGadgetTest extends \PHPUnit_Framework_TestCase
         $issues = $gadget->run($path, $config, new NullLogger())->getIssues();
 
         $expectedIssues = [
-            $this->createIssue('function / statement "extra_var_dump" is blacklisted', 47, Issue::LEVEL_WARNING),
+            $this->createIssue($path, 'function / statement "extra_var_dump" is blacklisted', 47, Issue::LEVEL_WARNING),
         ];
 
         $this->assertEquals($expectedIssues, $issues);

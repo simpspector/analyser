@@ -69,8 +69,6 @@ class AnalyseCommand extends Command
         $logger = new ConsoleLogger($output);
         $result = $this->executor->run($path, $config, $logger);
 
-        $output->setVerbosity(OutputInterface::VERBOSITY_NORMAL);
-
         $serializer = new Serializer([new GetSetMethodNormalizer()], [new JsonEncoder()]);
         $output->write($serializer->serialize($result, 'json', ['json_encode_options' => JSON_PRETTY_PRINT]));
     }

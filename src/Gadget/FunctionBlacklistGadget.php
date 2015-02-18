@@ -8,6 +8,7 @@ use PhpParser\Parser;
 use SimpSpector\Analyser\Gadget\FunctionBlacklist\Visitor;
 use SimpSpector\Analyser\Logger\AbstractLogger;
 use SimpSpector\Analyser\Result;
+use SimpSpector\Analyser\Util\FilesystemHelper;
 
 /**
  * @author Tobias Olry <tobias.olry@gmail.com>
@@ -17,9 +18,10 @@ class FunctionBlacklistGadget extends AbstractGadget
     const NAME = 'function_blacklist';
 
     /**
+     * @param string $path
+     * @param array $options
      * @param AbstractLogger $logger
      * @return Result
-     * @throws \Exception
      */
     public function run($path, array $options, AbstractLogger $logger)
     {
@@ -44,11 +46,11 @@ class FunctionBlacklistGadget extends AbstractGadget
 
         $traverser->addVisitor($visitor);
 
-        $files = $this->findFiles($path, $options['files']);
+        $files = FilesystemHelper::findFiles($path, $options['files']);
 
         foreach ($files as $file) {
             try {
-                $visitor->setCurrentFile($this->cleanupFilePath($path, $file));
+                $visitor->setCurrentFile($file);
                 $statements = $parser->parse(file_get_contents($file));
                 $traverser->traverse($statements);
             } catch (\Exception $e) {

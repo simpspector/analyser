@@ -3,6 +3,10 @@
 namespace SimpSpector\Analyser\Console;
 
 use SimpSpector\Analyser\Console\Command\AnalyseCommand;
+use SimpSpector\Analyser\Event\Listener\CleanPathListener;
+use SimpSpector\Analyser\Event\Listener\SimpleHighlightListener;
+use SimpSpector\Analyser\Event\Subscriber\LoggerSubscriber;
+use SimpSpector\Analyser\Events;
 use SimpSpector\Analyser\Executor\Executor;
 use SimpSpector\Analyser\Gadget\CommentBlacklistGadget;
 use SimpSpector\Analyser\Gadget\FunctionBlacklistGadget;
@@ -14,6 +18,7 @@ use SimpSpector\Analyser\Loader\YamlLoader;
 use SimpSpector\Analyser\Repository\Repository;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
@@ -27,8 +32,13 @@ class Application extends BaseApplication
     {
         parent::__construct('SimpSpector', 'dev');
 
+        $dispatcher = new EventDispatcher();
+        $dispatcher->addListener(Events::POST_GADGET, [new SimpleHighlightListener(), 'onGadgetResult']);
+        $dispatcher->addListener(Events::POST_GADGET, [new CleanPathListener(), 'onGadgetResult'], 100);
+        $dispatcher->addSubscriber(new LoggerSubscriber());
+
         $repository = new Repository();
-        $executor   = new Executor($repository);
+        $executor   = new Executor($repository, $dispatcher);
         $loader     = new YamlLoader();
 
         $repository->add(new TwigLintGadget());

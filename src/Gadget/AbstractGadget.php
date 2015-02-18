@@ -14,44 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 abstract class AbstractGadget implements GadgetInterface
 {
     /**
-     * @param string $path
-     * @param string $file
-     * @return string
-     */
-    protected function cleanupFilePath($path, $file)
-    {
-        return ltrim(str_replace($path, '', $file), '/');
-    }
-
-    /**
-     * @param string $path
-     * @param string[] $folders
-     * @param string $pattern
-     * @return array
-     */
-    protected function findFiles($path, array $folders, $pattern = '*.php')
-    {
-        $cwd = getcwd();
-        chdir($path);
-
-        $finder = (new Finder())
-            ->files()
-            ->name($pattern)
-            ->in($folders);
-
-        $files = array_map(
-            function ($file) {
-                return $file->getRealpath();
-            },
-            iterator_to_array($finder)
-        );
-
-        chdir($cwd);
-
-        return $files;
-    }
-
-    /**
      * @param array $options
      * @param string[] $defaults
      * @param string[] $fieldsToNormalize

@@ -64,7 +64,7 @@ class PhpcsGadget extends AbstractGadget
 
         $result = new Result();
         foreach ($rawIssues as $info) {
-            $result->addIssue($this->createIssue($path, $info));
+            $result->addIssue($this->createIssue($info));
         }
 
         return $result;
@@ -101,14 +101,13 @@ class PhpcsGadget extends AbstractGadget
     }
 
     /**
-     * @param string $path
      * @param array $data
      * @return Issue
      */
-    private function createIssue($path, array $data)
+    private function createIssue(array $data)
     {
         $issue = new Issue($data['message'], self::NAME);
-        $issue->setFile($this->cleanupFilePath($path, $data['file']));
+        $issue->setFile($data['file']);
         $issue->setLine($data['line']);
 
         switch ($data['type']) {

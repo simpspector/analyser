@@ -5,6 +5,7 @@ namespace SimpSpector\Analyser\Gadget;
 use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Logger\AbstractLogger;
 use SimpSpector\Analyser\Result;
+use SimpSpector\Analyser\Util\FilesystemHelper;
 
 /**
  * @author Lars Wallenborn <lars@wallenborn.net>
@@ -35,8 +36,8 @@ class CommentBlacklistGadget extends AbstractGadget
 
         $result = new Result();
 
-        foreach ($this->findFiles($path, $options['files']) as $filename) {
-            $result->merge($this->processFile($path, $filename, $options));
+        foreach (FilesystemHelper::findFiles($path, $options['files']) as $filename) {
+            $result->merge($this->processFile($filename, $options));
         }
 
         return $result;
@@ -51,18 +52,17 @@ class CommentBlacklistGadget extends AbstractGadget
     }
 
     /**
-     * @param string $path
      * @param string $filename
      * @param array $options
      * @return Result
      */
-    private function processFile($path, $filename, array $options)
+    private function processFile($filename, array $options)
     {
         $comments = $this->extract($filename);
 
         $result = new Result();
         foreach ($comments as $comment) {
-            $result->merge($this->processComment($path, $filename, $options, $comment));
+            $result->merge($this->processComment($filename, $options, $comment));
         }
 
         return $result;
@@ -97,13 +97,12 @@ class CommentBlacklistGadget extends AbstractGadget
     }
 
     /**
-     * @param string $path
      * @param string $filename
      * @param array $options
      * @param string $comment
      * @return Result
      */
-    private function processComment($path, $filename, array $options, $comment)
+    private function processComment($filename, array $options, $comment)
     {
         $result = new Result();
 
@@ -115,7 +114,7 @@ class CommentBlacklistGadget extends AbstractGadget
                 }
 
                 $issue = new Issue(sprintf('found "%s" in a comment', $blacklistedWord), $this->getName(), $errorLevel);
-                $issue->setFile($this->cleanupFilePath($path, $filename));
+                $issue->setFile($filename);
                 $issue->setLine($comment['line'] + $lineOffset);
 
                 $result->addIssue($issue);

@@ -2,6 +2,7 @@
 
 namespace SimpSpector\Analyser\Logger;
 
+use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -27,6 +28,10 @@ class ConsoleLogger extends AbstractLogger
      */
     public function write($message)
     {
+        if ($this->output instanceof Output && !$this->output->isVerbose()) {
+            return;
+        }
+
         $this->output->write($message);
     }
 } 
