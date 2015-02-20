@@ -8,6 +8,8 @@ use SimpSpector\Analyser\Event\Listener\SimpleHighlightListener;
 use SimpSpector\Analyser\Event\Subscriber\LoggerSubscriber;
 use SimpSpector\Analyser\Events;
 use SimpSpector\Analyser\Executor\Executor;
+use SimpSpector\Analyser\Formatter\Adapter\JsonAdapter;
+use SimpSpector\Analyser\Formatter\Formatter;
 use SimpSpector\Analyser\Gadget\CommentBlacklistGadget;
 use SimpSpector\Analyser\Gadget\FunctionBlacklistGadget;
 use SimpSpector\Analyser\Gadget\PhpcsGadget;
@@ -48,7 +50,10 @@ class Application extends BaseApplication
         $repository->add(new FunctionBlacklistGadget());
         $repository->add(new SecurityCheckerGadget());
 
-        $this->add(new AnalyseCommand($executor, $loader));
+        $formatter = new Formatter();
+        $formatter->registerAdapter(new JsonAdapter());
+
+        $this->add(new AnalyseCommand($executor, $loader, $formatter));
     }
 
     /**
