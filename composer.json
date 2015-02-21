@@ -30,7 +30,7 @@
     "config": {
         "bin-dir": "bin"
     },
-    "bin": ["bin/simpspector-analyser"],
+    "bin": ["bin/simpspector"],
     "repositories": [
         { "type": "vcs", "url": "https://github.com/tolry/twig-lint.git" }
     ]
