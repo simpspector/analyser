@@ -13,7 +13,8 @@ class FunctionBlacklistGadgetTest extends \PHPUnit_Framework_TestCase
 {
     private function createIssue($path, $message, $line, $level)
     {
-        $issue = new Issue($message, FunctionBlacklistGadget::NAME, $level);
+        $issue = new Issue($message);
+        $issue->setLevel($level);
         $issue->setFile($path . '/foo.php');
         $issue->setLine($line);
 

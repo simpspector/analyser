@@ -39,7 +39,8 @@ class TwigLintGadgetTest extends \PHPUnit_Framework_TestCase
 
     private function createIssue($path, $message, $file, $line, $level)
     {
-        $issue = new Issue($message, TwigLintGadget::NAME, $level);
+        $issue = new Issue($message);
+        $issue->setLevel($level);
         $issue->setFile($path . '/' . $file);
         $issue->setLine($line);
 

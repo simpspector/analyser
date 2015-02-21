@@ -13,8 +13,6 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
  */
 class PhpmdGadget extends AbstractGadget
 {
-    const NAME = 'phpmd';
-
     /**
      * @var string
      */
@@ -77,7 +75,7 @@ class PhpmdGadget extends AbstractGadget
      */
     public function getName()
     {
-        return self::NAME;
+        return 'phpmd';
     }
 
     /**
@@ -98,7 +96,8 @@ class PhpmdGadget extends AbstractGadget
      */
     private function createIssue($file, array $data)
     {
-        $issue = new Issue(trim($data['#']), self::NAME, Issue::LEVEL_WARNING);
+        $issue = new Issue(trim($data['#']));
+        $issue->setLevel(Issue::LEVEL_WARNING);
         $issue->setFile($file);
         $issue->setLine($data['@beginline']);
 

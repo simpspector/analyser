@@ -49,14 +49,11 @@ class Issue
 
     /**
      * @param string $message
-     * @param string $gadget
-     * @param string $level
      */
-    public function __construct($message, $gadget = 'simpspector', $level = self::LEVEL_NOTICE)
+    public function __construct($message)
     {
         $this->message          = $message;
-        $this->gadget           = $gadget;
-        $this->level            = $level;
+        $this->level            = self::LEVEL_NOTICE;
         $this->extraInformation = [];
     }
 
@@ -85,6 +82,7 @@ class Issue
     }
 
     /**
+     * @internal it will be set by executor
      * @param string $gadget
      */
     public function setGadget($gadget)

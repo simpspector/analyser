@@ -15,8 +15,6 @@ use SimpSpector\Analyser\Util\FilesystemHelper;
  */
 class FunctionBlacklistGadget extends AbstractGadget
 {
-    const NAME = 'function_blacklist';
-
     /**
      * @param string $path
      * @param array $options
@@ -66,6 +64,6 @@ class FunctionBlacklistGadget extends AbstractGadget
      */
     public function getName()
     {
-        return self::NAME;
+        return 'function_blacklist';
     }
 }

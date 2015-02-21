@@ -13,8 +13,6 @@ use SimpSpector\Analyser\Util\FilesystemHelper;
  */
 class TwigLintGadget extends AbstractGadget
 {
-    const NAME = 'twig_lint';
-
     /**
      * @var StubbedEnvironment
      */
@@ -54,7 +52,8 @@ class TwigLintGadget extends AbstractGadget
             } catch (\Twig_Error $e) {
                 $message = get_class($e) . ': ' . $e->getRawMessage();
 
-                $issue = new Issue($message, self::NAME, $options['error_level']);
+                $issue = new Issue($message);
+                $issue->setLevel($options['error_level']);
                 $issue->setFile($file);
                 $issue->setLine($e->getTemplateLine());
 
@@ -70,6 +69,6 @@ class TwigLintGadget extends AbstractGadget
      */
     public function getName()
     {
-        return self::NAME;
+        return 'twig_lint';
     }
 }

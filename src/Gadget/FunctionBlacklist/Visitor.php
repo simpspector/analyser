@@ -120,7 +120,8 @@ class Visitor extends NodeVisitorAbstract
      */
     private function addIssue($message, Node $node = null, $level = Issue::LEVEL_ERROR)
     {
-        $issue = new Issue($message, FunctionBlacklistGadget::NAME, $level);
+        $issue = new Issue($message);
+        $issue->setLevel($level);
         $issue->setFile($this->currentFile);
 
         if ($node) {
