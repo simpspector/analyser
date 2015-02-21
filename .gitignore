@@ -1,3 +1,4 @@
 bin/
+!/bin/simpspector-analyser
 composer.lock
 vendor/
