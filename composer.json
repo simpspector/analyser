@@ -19,13 +19,13 @@
         "symfony/serializer": "~2.6",
         "phpmd/phpmd": "~2.1",
         "squizlabs/php_codesniffer": "~2.0",
+        "sensiolabs/security-checker": "~2.0",
         "nikic/php-parser": "~1.0.2",
         "asm89/twig-lint": "dev-fix/twig-gt-1.16.2",
         "davidbadura/markdown-builder": "~1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.0",
-        "kherge/box": "~2.5"
+        "phpunit/phpunit": "~4.0"
     },
     "config": {
         "bin-dir": "bin"
