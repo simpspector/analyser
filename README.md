@@ -7,5 +7,5 @@ this is the analyser component to simplethings/simpspector - all the static code
 ## Usage
 
 ``` bash
-bin/simpspector-analyser /path/to/project
+bin/simpspector /path/to/project
 ```
