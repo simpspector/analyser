@@ -30,11 +30,15 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 class Application extends BaseApplication
 {
     /**
-     *
+     * @param string $bin
      */
-    public function __construct()
+    public function __construct($bin = '')
     {
         parent::__construct('SimpSpector', 'dev');
+
+        if ($bin) {
+            $bin = rtrim($bin, '/') . '/';
+        }
 
         $dispatcher = new EventDispatcher();
         $dispatcher->addListener(Events::POST_GADGET, [new SimpleHighlightListener(), 'onGadgetResult']);
@@ -46,11 +50,11 @@ class Application extends BaseApplication
         $loader     = new YamlLoader();
 
         $repository->add(new TwigLintGadget());
-        $repository->add(new PhpmdGadget());
-        $repository->add(new PhpcsGadget());
+        $repository->add(new PhpmdGadget($bin . 'phpmd'));
+        $repository->add(new PhpcsGadget($bin . 'phpcs'));
         $repository->add(new CommentBlacklistGadget());
         $repository->add(new FunctionBlacklistGadget());
-        $repository->add(new SecurityCheckerGadget());
+        $repository->add(new SecurityCheckerGadget($bin . 'security-checker'));
 
         $formatter = new Formatter();
         $formatter->registerAdapter(new SummaryAdapter());
