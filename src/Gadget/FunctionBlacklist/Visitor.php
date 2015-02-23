@@ -5,6 +5,7 @@ namespace SimpSpector\Analyser\Gadget\FunctionBlacklist;
 use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
 use SimpSpector\Analyser\Gadget\FunctionBlacklistGadget;
+use SimpSpector\Analyser\Gadget\GadgetInterface;
 use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Result;
 
@@ -20,6 +21,11 @@ class Visitor extends NodeVisitorAbstract
     private $currentFile;
 
     /**
+     * @var GadgetInterface
+     */
+    private $gadget;
+
+    /**
      * @var array
      */
     private $blacklist;
@@ -30,11 +36,13 @@ class Visitor extends NodeVisitorAbstract
     private $result;
 
     /**
+     * @param GadgetInterface $gadget
      * @param array $blacklist
      * @param Result $result
      */
-    public function __construct(array $blacklist, Result $result)
+    public function __construct(GadgetInterface $gadget, array $blacklist, Result $result)
     {
+        $this->gadget    = $gadget;
         $this->blacklist = $blacklist;
         $this->result    = $result;
     }
@@ -120,7 +128,7 @@ class Visitor extends NodeVisitorAbstract
      */
     private function addIssue($message, Node $node = null, $level = Issue::LEVEL_ERROR)
     {
-        $issue = new Issue($message);
+        $issue = new Issue($this->gadget, $message);
         $issue->setLevel($level);
         $issue->setFile($this->currentFile);
 

@@ -2,6 +2,7 @@
 
 namespace SimpSpector\Analyser\Tests\Gadget;
 
+use SimpSpector\Analyser\Gadget\GadgetInterface;
 use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Gadget\TwigLintGadget;
 use SimpSpector\Analyser\Logger\NullLogger;
@@ -31,15 +32,15 @@ class TwigLintGadgetTest extends \PHPUnit_Framework_TestCase
         $issues = $gadget->run($path, $config, new NullLogger())->getIssues();
 
         $expectedIssues = [
-            $this->createIssue($path, 'Twig_Error_Syntax: Unclosed "block"', 'one_line_error.html.twig', 11, 'error'),
+            $this->createIssue($gadget, $path, 'Twig_Error_Syntax: Unclosed "block"', 'one_line_error.html.twig', 11, 'error'),
         ];
 
         $this->assertEquals($expectedIssues, $issues);
     }
 
-    private function createIssue($path, $message, $file, $line, $level)
+    private function createIssue(GadgetInterface $gadget, $path, $message, $file, $line, $level)
     {
-        $issue = new Issue($message);
+        $issue = new Issue($gadget, $message);
         $issue->setLevel($level);
         $issue->setFile($path . '/' . $file);
         $issue->setLine($line);

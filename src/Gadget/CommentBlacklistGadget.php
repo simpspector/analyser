@@ -113,7 +113,7 @@ class CommentBlacklistGadget extends AbstractGadget
                     continue;
                 }
 
-                $issue = new Issue(sprintf('found "%s" in a comment', $blacklistedWord));
+                $issue = new Issue($this, sprintf('found "%s" in a comment', $blacklistedWord));
                 $issue->setLevel($errorLevel);
                 $issue->setFile($filename);
                 $issue->setLine($comment['line'] + $lineOffset);

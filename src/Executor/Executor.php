@@ -96,7 +96,6 @@ class Executor implements ExecutorInterface
         $options = $event->getOptions();
 
         $result = $gadget->run($path, $options, $logger);
-        $this->finishGadgetResult($gadget, $result);
 
         $event = new GadgetResultEvent($path, $options, $gadget, $result, $logger);
         $this->eventDispatcher->dispatch(Events::POST_GADGET, $event);
@@ -111,16 +110,5 @@ class Executor implements ExecutorInterface
     private function preparePath($path)
     {
         return realpath($path);
-    }
-
-    /**
-     * @param GadgetInterface $gadget
-     * @param Result $result
-     */
-    private function finishGadgetResult(GadgetInterface $gadget, Result $result)
-    {
-        foreach ($result->getIssues() as $issue) {
-            $issue->setGadget($gadget->getName());
-        }
     }
 } 

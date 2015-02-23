@@ -103,7 +103,7 @@ class SecurityCheckerGadget extends AbstractGadget
     {
         $message = sprintf('package "%s" with the version "%s" have known vulnerabilities', $lib, $version);
 
-        $issue = new Issue($message);
+        $issue = new Issue($this, $message);
 
         $issue->setDescription(
             $this->createDescription(

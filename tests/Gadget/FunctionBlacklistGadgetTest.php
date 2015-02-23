@@ -3,6 +3,7 @@
 namespace SimpSpector\Analyser\Tests\Gadget;
 
 use SimpSpector\Analyser\Gadget\FunctionBlacklistGadget;
+use SimpSpector\Analyser\Gadget\GadgetInterface;
 use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Logger\NullLogger;
 
@@ -11,9 +12,9 @@ use SimpSpector\Analyser\Logger\NullLogger;
  */
 class FunctionBlacklistGadgetTest extends \PHPUnit_Framework_TestCase
 {
-    private function createIssue($path, $message, $line, $level)
+    private function createIssue(GadgetInterface $gadget, $path, $message, $line, $level)
     {
-        $issue = new Issue($message);
+        $issue = new Issue($gadget, $message);
         $issue->setLevel($level);
         $issue->setFile($path . '/foo.php');
         $issue->setLine($line);
@@ -30,12 +31,12 @@ class FunctionBlacklistGadgetTest extends \PHPUnit_Framework_TestCase
         $issues = $gadget->run($path, $config, new NullLogger())->getIssues();
 
         $expectedIssues = [
-            $this->createIssue($path, 'function / statement "echo" is blacklisted', 9, Issue::LEVEL_WARNING),
-            $this->createIssue($path, 'function / statement "echo" is blacklisted', 13, Issue::LEVEL_WARNING),
-            $this->createIssue($path, 'function / statement "var_dump" is blacklisted', 32, Issue::LEVEL_ERROR),
-            $this->createIssue($path, 'function / statement "die/exit" is blacklisted', 37, Issue::LEVEL_ERROR),
-            $this->createIssue($path, 'function / statement "die/exit" is blacklisted', 39, Issue::LEVEL_ERROR),
-            $this->createIssue($path, 'function / statement "var_dump" is blacklisted', 46, Issue::LEVEL_ERROR),
+            $this->createIssue($gadget, $path, 'function / statement "echo" is blacklisted', 9, Issue::LEVEL_WARNING),
+            $this->createIssue($gadget, $path, 'function / statement "echo" is blacklisted', 13, Issue::LEVEL_WARNING),
+            $this->createIssue($gadget, $path, 'function / statement "var_dump" is blacklisted', 32, Issue::LEVEL_ERROR),
+            $this->createIssue($gadget, $path, 'function / statement "die/exit" is blacklisted', 37, Issue::LEVEL_ERROR),
+            $this->createIssue($gadget, $path, 'function / statement "die/exit" is blacklisted', 39, Issue::LEVEL_ERROR),
+            $this->createIssue($gadget, $path, 'function / statement "var_dump" is blacklisted', 46, Issue::LEVEL_ERROR),
         ];
 
         $this->assertEquals($expectedIssues, $issues);
@@ -50,8 +51,8 @@ class FunctionBlacklistGadgetTest extends \PHPUnit_Framework_TestCase
         $issues = $gadget->run($path, $config, new NullLogger())->getIssues();
 
         $expectedIssues = [
-            $this->createIssue($path, 'function / statement "die/exit" is blacklisted', 37, Issue::LEVEL_CRITICAL),
-            $this->createIssue($path, 'function / statement "die/exit" is blacklisted', 39, Issue::LEVEL_CRITICAL),
+            $this->createIssue($gadget, $path, 'function / statement "die/exit" is blacklisted', 37, Issue::LEVEL_CRITICAL),
+            $this->createIssue($gadget, $path, 'function / statement "die/exit" is blacklisted', 39, Issue::LEVEL_CRITICAL),
         ];
 
         $this->assertEquals($expectedIssues, $issues);
@@ -67,8 +68,8 @@ class FunctionBlacklistGadgetTest extends \PHPUnit_Framework_TestCase
         $issues = $gadget->run($path, $config, new NullLogger())->getIssues();
 
         $expectedIssues = [
-            $this->createIssue($path, 'function / statement "die/exit" is blacklisted', 37, Issue::LEVEL_CRITICAL),
-            $this->createIssue($path, 'function / statement "die/exit" is blacklisted', 39, Issue::LEVEL_CRITICAL),
+            $this->createIssue($gadget, $path, 'function / statement "die/exit" is blacklisted', 37, Issue::LEVEL_CRITICAL),
+            $this->createIssue($gadget, $path, 'function / statement "die/exit" is blacklisted', 39, Issue::LEVEL_CRITICAL),
         ];
 
         $this->assertEquals($expectedIssues, $issues);
@@ -83,7 +84,7 @@ class FunctionBlacklistGadgetTest extends \PHPUnit_Framework_TestCase
         $issues = $gadget->run($path, $config, new NullLogger())->getIssues();
 
         $expectedIssues = [
-            $this->createIssue($path, 'function / statement "extra_var_dump" is blacklisted', 47, Issue::LEVEL_WARNING),
+            $this->createIssue($gadget, $path, 'function / statement "extra_var_dump" is blacklisted', 47, Issue::LEVEL_WARNING),
         ];
 
         $this->assertEquals($expectedIssues, $issues);

@@ -104,7 +104,7 @@ class PhpcsGadget extends AbstractGadget
      */
     private function createIssue(array $data)
     {
-        $issue = new Issue($data['message']);
+        $issue = new Issue($this, $data['message']);
         $issue->setFile($data['file']);
         $issue->setLine($data['line']);
 

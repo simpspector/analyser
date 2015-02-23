@@ -2,6 +2,8 @@
 
 namespace SimpSpector\Analyser;
 
+use SimpSpector\Analyser\Gadget\GadgetInterface;
+
 /**
  * @author David Badura <d.a.badura@gmail.com>
  */
@@ -48,10 +50,12 @@ class Issue
     private $extraInformation;
 
     /**
+     * @param GadgetInterface $gadget
      * @param string $message
      */
-    public function __construct($message)
+    public function __construct(GadgetInterface $gadget, $message)
     {
+        $this->gadget           = $gadget->getName();
         $this->message          = $message;
         $this->level            = self::LEVEL_NOTICE;
         $this->extraInformation = [];
@@ -79,15 +83,6 @@ class Issue
     public function getGadget()
     {
         return $this->gadget;
-    }
-
-    /**
-     * @internal it will be set by executor
-     * @param string $gadget
-     */
-    public function setGadget($gadget)
-    {
-        $this->gadget = $gadget;
     }
 
     /**

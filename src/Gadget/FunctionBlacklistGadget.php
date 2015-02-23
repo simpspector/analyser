@@ -39,7 +39,7 @@ class FunctionBlacklistGadget extends AbstractGadget
 
         $result    = new Result();
         $parser    = new Parser(new Lexer());
-        $visitor   = new Visitor($options['blacklist'], $result);
+        $visitor   = new Visitor($this, $options['blacklist'], $result);
         $traverser = new NodeTraverser();
 
         $traverser->addVisitor($visitor);

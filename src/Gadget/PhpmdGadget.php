@@ -96,7 +96,7 @@ class PhpmdGadget extends AbstractGadget
      */
     private function createIssue($file, array $data)
     {
-        $issue = new Issue(trim($data['#']));
+        $issue = new Issue($this, trim($data['#']));
         $issue->setLevel(Issue::LEVEL_WARNING);
         $issue->setFile($file);
         $issue->setLine($data['@beginline']);

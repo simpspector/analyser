@@ -52,7 +52,7 @@ class TwigLintGadget extends AbstractGadget
             } catch (\Twig_Error $e) {
                 $message = get_class($e) . ': ' . $e->getRawMessage();
 
-                $issue = new Issue($message);
+                $issue = new Issue($this, $message);
                 $issue->setLevel($options['error_level']);
                 $issue->setFile($file);
                 $issue->setLine($e->getTemplateLine());
