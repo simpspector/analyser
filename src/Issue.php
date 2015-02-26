@@ -17,7 +17,7 @@ class Issue
     /**
      * @var string
      */
-    private $message;
+    private $title;
 
     /**
      * @var string
@@ -51,12 +51,12 @@ class Issue
 
     /**
      * @param GadgetInterface $gadget
-     * @param string $message
+     * @param string $title
      */
-    public function __construct(GadgetInterface $gadget, $message)
+    public function __construct(GadgetInterface $gadget, $title)
     {
         $this->gadget           = $gadget->getName();
-        $this->message          = $message;
+        $this->title            = $title;
         $this->level            = self::LEVEL_NOTICE;
         $this->extraInformation = [];
     }
@@ -64,17 +64,17 @@ class Issue
     /**
      * @return string
      */
-    public function getMessage()
+    public function getTitle()
     {
-        return $this->message;
+        return $this->title;
     }
 
     /**
-     * @param string $message
+     * @param string $title
      */
-    public function setMessage($message)
+    public function setTitle($title)
     {
-        $this->message = $message;
+        $this->title = $title;
     }
 
     /**
