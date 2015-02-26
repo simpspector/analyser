@@ -5,6 +5,7 @@ namespace SimpSpector\Analyser\Console;
 use SimpSpector\Analyser\Console\Command\AnalyseCommand;
 use SimpSpector\Analyser\Event\Listener\CleanPathListener;
 use SimpSpector\Analyser\Event\Listener\SimpleHighlightListener;
+use SimpSpector\Analyser\Event\Subscriber\CountMetricSubscriber;
 use SimpSpector\Analyser\Event\Subscriber\LoggerSubscriber;
 use SimpSpector\Analyser\Events;
 use SimpSpector\Analyser\Executor\Executor;
@@ -44,6 +45,7 @@ class Application extends BaseApplication
         $dispatcher->addListener(Events::POST_GADGET, [new SimpleHighlightListener(), 'onGadgetResult']);
         $dispatcher->addListener(Events::POST_GADGET, [new CleanPathListener(), 'onGadgetResult'], 100);
         $dispatcher->addSubscriber(new LoggerSubscriber());
+        $dispatcher->addSubscriber(new CountMetricSubscriber());
 
         $repository = new Repository();
         $executor   = new Executor($repository, $dispatcher);
