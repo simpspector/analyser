@@ -3,6 +3,7 @@
 namespace SimpSpector\Analyser\Formatter\Adapter;
 
 use SimpSpector\Analyser\Issue;
+use SimpSpector\Analyser\Metric;
 use SimpSpector\Analyser\Result;
 use SimpSpector\Analyser\Util\MarkdownBuilder;
 use SimpSpector\Analyser\Util\ResultHelper;
@@ -19,13 +20,20 @@ class DetailAdapter implements AdapterInterface
     public function format(Result $result)
     {
         $issues = ResultHelper::sortIssues($result->getIssues());
+        $metrics = ResultHelper::sortMetrics($result->getMetrics());
 
         $markdown = new MarkdownBuilder();
 
-        $markdown->h1(count($issues) . ' Issues');
+        $markdown->h1(count($issues) . ' Issue(s)');
 
         foreach (ResultHelper::groupIssues($issues) as $file => $issues) {
             $this->renderSection($markdown, $file, $issues);
+        }
+
+        $markdown->h1(count($metrics) . ' Metric(s)');
+
+        foreach ($metrics as $metric) {
+            $this->renderMetric($markdown, $metric);
         }
 
         return $markdown->getMarkdown();
@@ -67,5 +75,24 @@ class DetailAdapter implements AdapterInterface
 
         $markdown->h3($header);
         $markdown->p($issue->getDescription());
+    }
+
+    /**
+     * @param MarkdownBuilder $markdown
+     * @param Metric $metric
+     */
+    protected function renderMetric(MarkdownBuilder $markdown, Metric $metric)
+    {
+        $markdown->h2($metric->getTitle());
+
+        $markdown->bulletedList([
+            'code: ' . $metric->getCode(),
+            'type: ' . $metric->getType(),
+            'value: ' . $metric->getValue()
+        ]);
+
+        if ($metric->getDescription()) {
+            $markdown->p($metric->getDescription());
+        }
     }
 }

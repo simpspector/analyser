@@ -47,8 +47,8 @@ class CountMetricSubscriber implements EventSubscriberInterface
         foreach ($counts as $level => $count) {
             $result->addMetric(
                 new Metric(
-                    sprintf("count %ss in %s", $level, $gadget->getName()),
-                    sprintf("count.%s.%s", $gadget->getName(), $level),
+                    sprintf("Count %ss in %s", $level, $gadget->getName()),
+                    sprintf("%s.count.%s", $gadget->getName(), $level),
                     $count,
                     Metric::TYPE_COUNT
                 )
@@ -77,7 +77,7 @@ class CountMetricSubscriber implements EventSubscriberInterface
         foreach ($counts as $level => $count) {
             $result->addMetric(
                 new Metric(
-                    sprintf("count %ss", $level),
+                    sprintf("Count %ss", $level),
                     sprintf("count.%s", $level),
                     $count,
                     Metric::TYPE_COUNT
