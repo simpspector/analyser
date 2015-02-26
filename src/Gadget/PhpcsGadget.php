@@ -12,8 +12,6 @@ use SimpSpector\Analyser\Result;
  */
 class PhpcsGadget extends AbstractGadget
 {
-    const NAME = 'phpcs';
-
     /**
      * @var string
      */
@@ -75,7 +73,7 @@ class PhpcsGadget extends AbstractGadget
      */
     public function getName()
     {
-        return self::NAME;
+        return 'phpcs';
     }
 
     /**
@@ -106,7 +104,7 @@ class PhpcsGadget extends AbstractGadget
      */
     private function createIssue(array $data)
     {
-        $issue = new Issue($data['message'], self::NAME);
+        $issue = new Issue($this, $data['message']);
         $issue->setFile($data['file']);
         $issue->setLine($data['line']);
 

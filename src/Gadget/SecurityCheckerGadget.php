@@ -16,11 +16,6 @@ class SecurityCheckerGadget extends AbstractGadget
     /**
      * @var string
      */
-    const NAME = 'security-checker';
-
-    /**
-     * @var string
-     */
     private $bin;
 
     /**
@@ -75,7 +70,7 @@ class SecurityCheckerGadget extends AbstractGadget
      */
     public function getName()
     {
-        return self::NAME;
+        return 'security-checker';
     }
 
     /**
@@ -108,7 +103,7 @@ class SecurityCheckerGadget extends AbstractGadget
     {
         $message = sprintf('package "%s" with the version "%s" have known vulnerabilities', $lib, $version);
 
-        $issue = new Issue($message, self::NAME);
+        $issue = new Issue($this, $message);
 
         $issue->setDescription(
             $this->createDescription(
