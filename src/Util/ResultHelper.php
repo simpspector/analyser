@@ -49,8 +49,8 @@ class ResultHelper
     public static function sortMetrics(array $metrics)
     {
         usort($metrics, function (Metric $a, Metric $b) {
-
-            if (0 != $diff = substr_count($a->getCode(), '.') - substr_count($b->getCode(), '.')) {
+            // sort root or not so deep metrics to the top
+            if (0 != $diff = self::codeDepth($a) - self::codeDepth($b)) {
                 return $diff;
             }
 
@@ -58,5 +58,14 @@ class ResultHelper
         });
 
         return $metrics;
+    }
+
+    /**
+     * @param Metric $metric
+     * @return int
+     */
+    private function codeDepth(Metric $metric)
+    {
+        return substr_count($metric->getCode(), '.');
     }
 }

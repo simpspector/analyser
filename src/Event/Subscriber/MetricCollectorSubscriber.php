@@ -12,7 +12,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * @author David Badura <d.a.badura@gmail.com>
  */
-class CountMetricSubscriber implements EventSubscriberInterface
+class MetricCollectorSubscriber implements EventSubscriberInterface
 {
     /**
      * @return array
