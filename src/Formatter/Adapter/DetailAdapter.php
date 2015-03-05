@@ -67,7 +67,7 @@ class DetailAdapter implements AdapterInterface
      */
     protected function renderIssue(MarkdownBuilder $markdown, Issue $issue)
     {
-        $header = $issue->getMessage();
+        $header = $issue->getTitle();
 
         if ($issue->getLine()) {
             $header .= ' on line ' . $issue->getLine();

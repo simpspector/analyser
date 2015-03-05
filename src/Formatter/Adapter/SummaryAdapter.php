@@ -31,7 +31,7 @@ class SummaryAdapter implements AdapterInterface
                 '%s on line %s: %s',
                 $issue->getFile(),
                 $issue->getLine(),
-                $issue->getMessage()
+                $issue->getTitle()
             );
         }, $issues));
 
