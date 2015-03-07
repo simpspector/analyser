@@ -1,6 +1,6 @@
 <?php
 
-namespace SimpSpector\Analyser\Formatter\Adapter;
+namespace SimpSpector\Analyser\Importer\Adapter;
 
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;

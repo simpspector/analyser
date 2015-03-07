@@ -6,8 +6,12 @@ use SimpSpector\Analyser\Analyser;
 use SimpSpector\Analyser\AnalyserBuilder;
 use SimpSpector\Analyser\Console\Command\AnalyseCommand;
 use SimpSpector\Analyser\Console\Command\ReferenceCommand;
+use SimpSpector\Analyser\Console\Command\DiffCommand;
+use SimpSpector\Analyser\Diff\Calculator;
 use SimpSpector\Analyser\Formatter\Formatter;
 use SimpSpector\Analyser\Formatter\FormatterInterface;
+use SimpSpector\Analyser\Importer\Adapter\JsonAdapter;
+use SimpSpector\Analyser\Importer\Importer;
 use SimpSpector\Analyser\Repository\RepositoryInterface;
 use Symfony\Component\Console\Application as BaseApplication;
 
@@ -26,8 +30,12 @@ class Application extends BaseApplication
     {
         parent::__construct('SimpSpector', 'dev');
 
+        $importer = new Importer();
+        $importer->registerAdapter(new JsonAdapter());
+
         $this->add(new AnalyseCommand($analyser, $formatter));
         $this->add(new ReferenceCommand($repository));
+        $this->add(new DiffCommand($importer, new Calculator(), $analyser->getExecutor(), $loader));
     }
 
     /**
