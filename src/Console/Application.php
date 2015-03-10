@@ -2,9 +2,11 @@
 
 namespace SimpSpector\Analyser\Console;
 
+use SimpSpector\Analyser\Analyser;
 use SimpSpector\Analyser\AnalyserBuilder;
 use SimpSpector\Analyser\Console\Command\AnalyseCommand;
 use SimpSpector\Analyser\Formatter\Formatter;
+use SimpSpector\Analyser\Formatter\FormatterInterface;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -14,17 +16,13 @@ use Symfony\Component\Console\Input\InputInterface;
 class Application extends BaseApplication
 {
     /**
-     * @param string $bin
+     * @param Analyser $analyser
+     * @param FormatterInterface $formatter
+     * @internal param string $bin
      */
-    public function __construct($bin = null)
+    public function __construct(Analyser $analyser, FormatterInterface $formatter)
     {
         parent::__construct('SimpSpector', 'dev');
-
-        $analyser = (new AnalyserBuilder())
-            ->setBinaryPath($bin)
-            ->build();
-
-        $formatter = Formatter::create();
 
         $this->add(new AnalyseCommand($analyser, $formatter));
     }
@@ -49,5 +47,20 @@ class Application extends BaseApplication
         $inputDefinition->setArguments();
 
         return $inputDefinition;
+    }
+
+    /**
+     * @param string|null $bin
+     * @return self
+     */
+    public static function create($bin = null)
+    {
+        $analyser = (new AnalyserBuilder())
+            ->setBinaryDir($bin)
+            ->build();
+
+        $formatter = Formatter::create();
+
+        return new self($analyser, $formatter);
     }
 }
