@@ -9,6 +9,7 @@ use SimpSpector\Analyser\Event\Subscriber\MetricsCollectorSubscriber;
 use SimpSpector\Analyser\Executor\Executor;
 use SimpSpector\Analyser\Gadget;
 use SimpSpector\Analyser\Gadget\GadgetInterface;
+use SimpSpector\Analyser\Loader\ConfigLoader;
 use SimpSpector\Analyser\Loader\LoaderInterface;
 use SimpSpector\Analyser\Loader\YamlLoader;
 use SimpSpector\Analyser\Repository\Repository;
@@ -117,7 +118,7 @@ class AnalyserBuilder
     {
         $dispatcher = $this->dispatcher ?: new EventDispatcher();
         $repository = $this->repository ?: new Repository();
-        $loader     = $this->loader ?: new YamlLoader();
+        $loader     = $this->loader ?: new ConfigLoader(new YamlLoader(), $repository);
 
         if ($this->enableDefaultListener) {
             $this->registerDefaultListener($dispatcher);

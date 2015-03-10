@@ -6,13 +6,26 @@ use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Logger\AbstractLogger;
 use SimpSpector\Analyser\Result;
 use SimpSpector\Analyser\Util\FilesystemHelper;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
 /**
  * @author Lars Wallenborn <lars@wallenborn.net>
  */
-class CommentBlacklistGadget extends AbstractGadget
+class CommentBlacklistGadget implements GadgetInterface
 {
-    const NAME = 'comment_blacklist';
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    public function configure(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->node('files', 'paths')->defaultValue(['./'])->end()
+            ->node('blacklist', 'level_map')->defaultValue([
+                'todo'        => Issue::LEVEL_NOTICE,
+                'dont commit' => Issue::LEVEL_ERROR,
+            ])->end()
+        ->end();
+    }
 
     /**
      * @param string $path
@@ -22,18 +35,6 @@ class CommentBlacklistGadget extends AbstractGadget
      */
     public function run($path, array $options, AbstractLogger $logger)
     {
-        $options = $this->prepareOptions(
-            $options,
-            [
-                'files'     => './',
-                'blacklist' => [
-                    'todo'        => Issue::LEVEL_NOTICE,
-                    'dont commit' => Issue::LEVEL_ERROR,
-                ]
-            ],
-            ['files', 'blacklist']
-        );
-
         $result = new Result();
 
         foreach (FilesystemHelper::findFiles($path, $options['files']) as $filename) {
@@ -48,7 +49,7 @@ class CommentBlacklistGadget extends AbstractGadget
      */
     public function getName()
     {
-        return self::NAME;
+        return 'comment_blacklist';
     }
 
     /**

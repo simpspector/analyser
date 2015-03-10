@@ -7,11 +7,12 @@ use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Logger\AbstractLogger;
 use SimpSpector\Analyser\Result;
 use SimpSpector\Analyser\Util\FilesystemHelper;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
 /**
  * @author Tobias Olry <tobias.olry@gmail.com>
  */
-class TwigLintGadget extends AbstractGadget
+class TwigLintGadget implements GadgetInterface
 {
     /**
      * @var StubbedEnvironment
@@ -27,6 +28,17 @@ class TwigLintGadget extends AbstractGadget
     }
 
     /**
+     * @param ArrayNodeDefinition $node
+     */
+    public function configure(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->node('files', 'paths')->defaultValue(['./'])->end()
+            ->node('error_level', 'level')->end()
+        ->end();
+    }
+
+    /**
      * @param string $path
      * @param array $options
      * @param AbstractLogger $logger
@@ -34,15 +46,6 @@ class TwigLintGadget extends AbstractGadget
      */
     public function run($path, array $options, AbstractLogger $logger)
     {
-        $options = $this->prepareOptions(
-            $options,
-            [
-                'files'       => ['.'],
-                'error_level' => 'error',
-            ],
-            ['files']
-        );
-
         $result = new Result();
         $files  = FilesystemHelper::findFiles($path, $options['files'], '*.twig');
 

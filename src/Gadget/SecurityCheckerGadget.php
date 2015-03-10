@@ -7,11 +7,12 @@ use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Logger\AbstractLogger;
 use SimpSpector\Analyser\Process\ProcessBuilder;
 use SimpSpector\Analyser\Result;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
  */
-class SecurityCheckerGadget extends AbstractGadget
+class SecurityCheckerGadget implements GadgetInterface
 {
     /**
      * @var string
@@ -27,6 +28,17 @@ class SecurityCheckerGadget extends AbstractGadget
     }
 
     /**
+     * @param ArrayNodeDefinition $node
+     */
+    public function configure(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->node('directory', 'path')->defaultValue('./')->end()
+            ->node('level', 'level')->defaultValue(Issue::LEVEL_CRITICAL)->end()
+        ->end();
+    }
+
+    /**
      * @param string $path
      * @param array $options
      * @param AbstractLogger $logger
@@ -34,14 +46,6 @@ class SecurityCheckerGadget extends AbstractGadget
      */
     public function run($path, array $options, AbstractLogger $logger)
     {
-        $options = $this->prepareOptions(
-            $options,
-            [
-                'directory' => './',
-                'level'     => Issue::LEVEL_CRITICAL
-            ]
-        );
-
         $processBuilder = new ProcessBuilder([$this->bin, 'security:check', '--format=json', $options['directory']]);
         $processBuilder->setWorkingDirectory($path);
         $output = $processBuilder->run($logger);
