@@ -7,13 +7,8 @@ use SimpSpector\Analyser\Event\Listener\SimpleHighlightListener;
 use SimpSpector\Analyser\Event\Subscriber\LoggerSubscriber;
 use SimpSpector\Analyser\Event\Subscriber\MetricsCollectorSubscriber;
 use SimpSpector\Analyser\Executor\Executor;
-use SimpSpector\Analyser\Gadget\CommentBlacklistGadget;
-use SimpSpector\Analyser\Gadget\FunctionBlacklistGadget;
+use SimpSpector\Analyser\Gadget;
 use SimpSpector\Analyser\Gadget\GadgetInterface;
-use SimpSpector\Analyser\Gadget\PhpcsGadget;
-use SimpSpector\Analyser\Gadget\PhpmdGadget;
-use SimpSpector\Analyser\Gadget\SecurityCheckerGadget;
-use SimpSpector\Analyser\Gadget\TwigLintGadget;
 use SimpSpector\Analyser\Loader\LoaderInterface;
 use SimpSpector\Analyser\Loader\YamlLoader;
 use SimpSpector\Analyser\Repository\Repository;
@@ -59,7 +54,7 @@ class AnalyserBuilder
     /**
      * @var string
      */
-    protected $bin = '';
+    protected $binDir;
 
     /**
      * @param EventDispatcherInterface $dispatcher
@@ -105,12 +100,12 @@ class AnalyserBuilder
     }
 
     /**
-     * @param string $bin
+     * @param string $dir
      * @return $this
      */
-    public function setBinaryPath($bin)
+    public function setBinaryDir($dir)
     {
-        $this->bin = $bin;
+        $this->binDir = rtrim($dir, '/');
 
         return $this;
     }
@@ -157,11 +152,13 @@ class AnalyserBuilder
      */
     protected function registerDefaultGadgets(RepositoryInterface $repository)
     {
-        $repository->add(new TwigLintGadget());
-        $repository->add(new PhpmdGadget($this->bin . 'phpmd'));
-        $repository->add(new PhpcsGadget($this->bin . 'phpcs'));
-        $repository->add(new CommentBlacklistGadget());
-        $repository->add(new FunctionBlacklistGadget());
-        $repository->add(new SecurityCheckerGadget($this->bin . 'security-checker'));
+        $binDir = $this->binDir ? $this->binDir . '/' : '';
+
+        $repository->add(new Gadget\TwigLintGadget());
+        $repository->add(new Gadget\PhpmdGadget($binDir . 'phpmd'));
+        $repository->add(new Gadget\PhpcsGadget($binDir . 'phpcs'));
+        $repository->add(new Gadget\CommentBlacklistGadget());
+        $repository->add(new Gadget\FunctionBlacklistGadget());
+        $repository->add(new Gadget\SecurityCheckerGadget($binDir . 'security-checker'));
     }
 }

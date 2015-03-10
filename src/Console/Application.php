@@ -16,13 +16,9 @@ class Application extends BaseApplication
     /**
      * @param string $bin
      */
-    public function __construct($bin = '')
+    public function __construct($bin = null)
     {
         parent::__construct('SimpSpector', 'dev');
-
-        if ($bin) {
-            $bin = rtrim($bin, '/') . '/';
-        }
 
         $analyser = (new AnalyserBuilder())
             ->setBinaryPath($bin)
