@@ -3,6 +3,9 @@
 namespace SimpSpector\Analyser\Formatter;
 
 use SimpSpector\Analyser\Formatter\Adapter\AdapterInterface;
+use SimpSpector\Analyser\Formatter\Adapter\DetailAdapter;
+use SimpSpector\Analyser\Formatter\Adapter\JsonAdapter;
+use SimpSpector\Analyser\Formatter\Adapter\SummaryAdapter;
 use SimpSpector\Analyser\Result;
 
 /**
@@ -42,5 +45,19 @@ class Formatter implements FormatterInterface
         }
 
         $this->adapters[$adapter->getName()] = $adapter;
+    }
+
+    /**
+     * @return Formatter
+     * @throws \Exception
+     */
+    public static function create()
+    {
+        $formatter = new Formatter();
+        $formatter->registerAdapter(new SummaryAdapter());
+        $formatter->registerAdapter(new DetailAdapter());
+        $formatter->registerAdapter(new JsonAdapter());
+
+        return $formatter;
     }
 }
