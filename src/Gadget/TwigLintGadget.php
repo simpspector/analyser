@@ -34,7 +34,7 @@ class TwigLintGadget implements GadgetInterface
     {
         $node->children()
             ->node('files', 'paths')->defaultValue(['./'])->end()
-            ->node('error_level', 'level')->end()
+            ->node('error_level', 'level')->defaultValue(Issue::LEVEL_ERROR)->end()
         ->end();
     }
 

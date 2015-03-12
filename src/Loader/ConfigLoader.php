@@ -56,9 +56,9 @@ class ConfigLoader implements LoaderInterface
         $rootNode = $builder->root('simpspector', 'array', new NodeBuilder());
         $children = $rootNode->children();
 
-        foreach ($this->repository->all() as $repository) {
-            $gadgetNode = $children->arrayNode($repository->getName());
-            $repository->configure($gadgetNode);
+        foreach ($this->repository->all() as $gadget) {
+            $gadgetNode = $children->arrayNode($gadget->getName());
+            $gadget->configure($gadgetNode);
         }
 
         return $builder->buildTree();

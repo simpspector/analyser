@@ -5,7 +5,7 @@
     "autoload": {
         "psr-4": {"SimpSpector\\Analyser\\": "src/"}
     },
-    "dev-autoload": {
+    "autoload-dev": {
         "psr-4": {"SimpSpector\\Analyser\\Tests\\": "tests/"}
     },
     "require": {

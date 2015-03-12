@@ -8,7 +8,7 @@ use SimpSpector\Analyser\Logger\NullLogger;
 /**
  * @author Lars Wallenborn <lars@wallenborn.net>
  */
-class CommentBlacklistGadgetTest extends \PHPUnit_Framework_TestCase
+class CommentBlacklistGadgetTest extends GadgetTestCase
 {
     /** @var CommentBlacklistGadget */
     private $OUT;
@@ -18,12 +18,23 @@ class CommentBlacklistGadgetTest extends \PHPUnit_Framework_TestCase
         $this->OUT = new CommentBlacklistGadget();
     }
 
+    public function testDefaultConfig()
+    {
+        $this->assertConfig($this->OUT, [
+            'files'     => ['./'],
+            'blacklist' => [
+                'todo'        => 'notice',
+                'dont commit' => 'error'
+            ]
+        ], []);
+    }
+
     public function testFixtures()
     {
         $path   = __DIR__ . '/_data/comment_blacklist';
         $config = [];
 
-        $issues = $this->OUT->run($path, $config, new NullLogger())->getIssues();
+        $issues = $this->OUT->run($path, $this->resolve($this->OUT, $config), new NullLogger())->getIssues();
 
         $this->assertEquals(5, count($issues));
         $lineNumbers = [];
