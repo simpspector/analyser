@@ -2,9 +2,8 @@
 
 namespace SimpSpector\Analyser\Console\Command;
 
-use SimpSpector\Analyser\Executor\ExecutorInterface;
+use SimpSpector\Analyser\Analyser;
 use SimpSpector\Analyser\Formatter\FormatterInterface;
-use SimpSpector\Analyser\Loader\LoaderInterface;
 use SimpSpector\Analyser\Logger\ConsoleLogger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,14 +18,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class AnalyseCommand extends Command
 {
     /**
-     * @var ExecutorInterface
+     * @var Analyser
      */
-    private $executor;
-
-    /**
-     * @var LoaderInterface
-     */
-    private $loader;
+    private $analyser;
 
     /**
      * @var FormatterInterface
@@ -34,16 +28,14 @@ class AnalyseCommand extends Command
     private $formatter;
 
     /**
-     * @param ExecutorInterface $executor
-     * @param LoaderInterface $loader
+     * @param Analyser $analyser
      * @param FormatterInterface $formatter
      */
-    public function __construct(ExecutorInterface $executor, LoaderInterface $loader, FormatterInterface $formatter)
+    public function __construct(Analyser $analyser, FormatterInterface $formatter)
     {
         parent::__construct();
 
-        $this->executor  = $executor;
-        $this->loader    = $loader;
+        $this->analyser  = $analyser;
         $this->formatter = $formatter;
     }
 
@@ -76,11 +68,7 @@ class AnalyseCommand extends Command
             $configFile = $path . '/.simpspector.yml';
         }
 
-        $config = $this->loader->load($configFile);
-
-        $logger = new ConsoleLogger($output);
-        $result = $this->executor->run($path, $config, $logger);
-
+        $result = $this->analyser->analyse($path, $configFile, new ConsoleLogger($output));
         $output->writeln($this->formatter->format($result, $input->getOption('format')));
     }
 }

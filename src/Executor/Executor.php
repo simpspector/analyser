@@ -64,6 +64,22 @@ class Executor implements ExecutorInterface
     }
 
     /**
+     * @return RepositoryInterface
+     */
+    public function getRepository()
+    {
+        return $this->repository;
+    }
+
+    /**
+     * @return EventDispatcherInterface
+     */
+    public function getEventDispatcher()
+    {
+        return $this->eventDispatcher;
+    }
+
+    /**
      * @param string $path
      * @param array $config
      * @param AbstractLogger $logger

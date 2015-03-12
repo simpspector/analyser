@@ -3,5 +3,4 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$application = new \SimpSpector\Analyser\Console\Application(__DIR__);
-$application->run();
+\SimpSpector\Analyser\Console\Application::create(__DIR__)->run();
