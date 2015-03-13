@@ -15,6 +15,14 @@ class Repository implements RepositoryInterface
     private $gadgets = [];
 
     /**
+     * @return GadgetInterface[]
+     */
+    public function all()
+    {
+        return $this->gadgets;
+    }
+
+    /**
      * @param GadgetInterface $gadget
      * @throws \Exception
      */

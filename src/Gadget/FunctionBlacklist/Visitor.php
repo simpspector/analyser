@@ -64,7 +64,7 @@ class Visitor extends NodeVisitorAbstract
             $this->addIssueForBlacklistedFunction(
                 $node->getFirst(),
                 $node,
-                $this->translateErrorLevel($this->blacklist[$node->getFirst()])
+                $this->blacklist[$node->getFirst()]
             );
         }
 
@@ -72,13 +72,13 @@ class Visitor extends NodeVisitorAbstract
             $this->addIssueForBlacklistedFunction(
                 'die/exit',
                 $node,
-                $this->translateErrorLevel($this->blacklist['die'])
+                $this->blacklist['die']
             );
         } elseif (isset($this->blacklist['exit']) && $node instanceof Node\Expr\Exit_) {
             $this->addIssueForBlacklistedFunction(
                 'die/exit',
                 $node,
-                $this->translateErrorLevel($this->blacklist['exit'])
+                $this->blacklist['exit']
             );
         }
 
@@ -86,7 +86,7 @@ class Visitor extends NodeVisitorAbstract
             $this->addIssueForBlacklistedFunction(
                 'echo',
                 $node,
-                $this->translateErrorLevel($this->blacklist['echo'])
+                $this->blacklist['echo']
             );
         }
     }
@@ -137,25 +137,5 @@ class Visitor extends NodeVisitorAbstract
         }
 
         $this->result->addIssue($issue);
-    }
-
-    /**
-     * @param string $string
-     * @return string
-     */
-    private function translateErrorLevel($string)
-    {
-        switch (trim(strtolower($string))) {
-            case 'notice':
-                return Issue::LEVEL_NOTICE;
-            case 'warning':
-                return Issue::LEVEL_WARNING;
-            case 'error':
-                return Issue::LEVEL_ERROR;
-            case 'critical':
-                return Issue::LEVEL_CRITICAL;
-            default:
-                throw new \RuntimeException('unknown error level ' . $string);
-        }
     }
 }

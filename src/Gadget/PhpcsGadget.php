@@ -6,11 +6,12 @@ use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Logger\AbstractLogger;
 use SimpSpector\Analyser\Process\ProcessBuilder;
 use SimpSpector\Analyser\Result;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
  */
-class PhpcsGadget extends AbstractGadget
+class PhpcsGadget implements GadgetInterface
 {
     /**
      * @var string
@@ -26,6 +27,18 @@ class PhpcsGadget extends AbstractGadget
     }
 
     /**
+     * @param ArrayNodeDefinition $node
+     */
+    public function configure(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->node('files', 'paths')->defaultValue(['./'])->end()
+            ->node('standards', 'array')->prototype('scalar')->end()->defaultValue(['PSR1', 'PSR2'])->end()
+            ->node('extensions', 'array')->prototype('scalar')->end()->defaultValue(['php'])->end()
+        ->end();
+    }
+
+    /**
      * @param string $path
      * @param array $options
      * @param AbstractLogger $logger
@@ -33,16 +46,6 @@ class PhpcsGadget extends AbstractGadget
      */
     public function run($path, array $options, AbstractLogger $logger)
     {
-        $options = $this->prepareOptions(
-            $options,
-            [
-                'files'      => './',
-                'standards'  => ['PSR1', 'PSR2'],
-                'extensions' => ['php']
-            ],
-            ['files', 'standards', 'extensions']
-        );
-
         $processBuilder = new ProcessBuilder([$this->bin, '--report=csv']);
 
         foreach ($options['standards'] as $standard) {

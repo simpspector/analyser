@@ -10,6 +10,11 @@ use SimpSpector\Analyser\Gadget\GadgetInterface;
 interface RepositoryInterface
 {
     /**
+     * @return GadgetInterface[]
+     */
+    public function all();
+
+    /**
      * @param GadgetInterface $gadget
      * @throws \Exception
      */

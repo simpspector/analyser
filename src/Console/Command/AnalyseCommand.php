@@ -45,7 +45,7 @@ class AnalyseCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('simpspector:analyse')
+            ->setName('analyse')
             ->setDescription('Analyse Project')
             ->addArgument('path', InputArgument::REQUIRED, 'path to the project')
             ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'path to .simpspector.yml', null)
@@ -62,13 +62,12 @@ class AnalyseCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = rtrim($input->getArgument('path'), '/');
+        $result = $this->analyser->analyse(
+            $input->getArgument('path'),
+            $input->getOption('config'),
+            new ConsoleLogger($output)
+        );
 
-        if (!$configFile = $input->getOption('config')) {
-            $configFile = $path . '/.simpspector.yml';
-        }
-
-        $result = $this->analyser->analyse($path, $configFile, new ConsoleLogger($output));
         $output->writeln($this->formatter->format($result, $input->getOption('format')));
     }
 }

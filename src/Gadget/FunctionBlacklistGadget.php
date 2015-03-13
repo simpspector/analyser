@@ -6,15 +6,33 @@ use PhpParser\Lexer;
 use PhpParser\NodeTraverser;
 use PhpParser\Parser;
 use SimpSpector\Analyser\Gadget\FunctionBlacklist\Visitor;
+use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Logger\AbstractLogger;
 use SimpSpector\Analyser\Result;
 use SimpSpector\Analyser\Util\FilesystemHelper;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
 /**
  * @author Tobias Olry <tobias.olry@gmail.com>
  */
-class FunctionBlacklistGadget extends AbstractGadget
+class FunctionBlacklistGadget implements GadgetInterface
 {
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    public function configure(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->node('files', 'paths')->defaultValue(['./'])->end()
+            ->node('blacklist', 'level_map')->defaultValue([
+                'die'      => Issue::LEVEL_ERROR,
+                'var_dump' => Issue::LEVEL_ERROR,
+                'echo'     => Issue::LEVEL_WARNING,
+                'dump'     => Issue::LEVEL_ERROR,
+            ])->end()
+        ->end();
+    }
+
     /**
      * @param string $path
      * @param array $options
@@ -23,20 +41,6 @@ class FunctionBlacklistGadget extends AbstractGadget
      */
     public function run($path, array $options, AbstractLogger $logger)
     {
-        $options = $this->prepareOptions(
-            $options,
-            [
-                'files'     => ['.'],
-                'blacklist' => [
-                    'die'      => 'error',
-                    'var_dump' => 'error',
-                    'echo'     => 'warning',
-                    'dump'     => 'error',
-                ],
-            ],
-            ['files', 'blacklist']
-        );
-
         $result    = new Result();
         $parser    = new Parser(new Lexer());
         $visitor   = new Visitor($this, $options['blacklist'], $result);

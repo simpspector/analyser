@@ -10,14 +10,22 @@ use SimpSpector\Analyser\Logger\NullLogger;
 /**
  * @author Tobias Olry <tobias.olry@gmail.com>
  */
-class TwigLintGadgetTest extends \PHPUnit_Framework_TestCase
+class TwigLintGadgetTest extends GadgetTestCase
 {
+    public function testDefaultConfig()
+    {
+        $gadget = new TwigLintGadget();
+
+        $this->assertConfig($gadget, ['files' => ['./'], 'error_level' => 'error'], []);
+    }
+
     public function testNoErrors()
     {
-        $path   = __DIR__ . '/_data/twig_lint/success';
-        $config = [];
+        $path = __DIR__ . '/_data/twig_lint/success';
 
         $gadget = new TwigLintGadget();
+        $config = $this->resolve($gadget, []);
+
         $issues = $gadget->run($path, $config, new NullLogger())->getIssues();
 
         $this->assertEquals([], $issues);
@@ -25,14 +33,16 @@ class TwigLintGadgetTest extends \PHPUnit_Framework_TestCase
 
     public function testOneLineError()
     {
-        $path   = __DIR__ . '/_data/twig_lint/error';
-        $config = [];
+        $path = __DIR__ . '/_data/twig_lint/error';
 
         $gadget = new TwigLintGadget();
+        $config = $this->resolve($gadget, []);
+
         $issues = $gadget->run($path, $config, new NullLogger())->getIssues();
 
         $expectedIssues = [
-            $this->createIssue($gadget, $path, 'Twig_Error_Syntax: Unclosed "block"', 'one_line_error.html.twig', 11, 'error'),
+            $this->createIssue($gadget, $path, 'Twig_Error_Syntax: Unclosed "block"', 'one_line_error.html.twig', 11,
+                'error'),
         ];
 
         $this->assertEquals($expectedIssues, $issues);
