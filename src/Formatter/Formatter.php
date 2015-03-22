@@ -3,7 +3,6 @@
 namespace SimpSpector\Analyser\Formatter;
 
 use SimpSpector\Analyser\Formatter\Adapter\AdapterInterface;
-use SimpSpector\Analyser\Formatter\Adapter\CsvAdapter;
 use SimpSpector\Analyser\Formatter\Adapter\DetailAdapter;
 use SimpSpector\Analyser\Formatter\Adapter\JsonAdapter;
 use SimpSpector\Analyser\Formatter\Adapter\SummaryAdapter;
