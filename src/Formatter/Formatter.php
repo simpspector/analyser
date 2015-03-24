@@ -6,6 +6,7 @@ use SimpSpector\Analyser\Formatter\Adapter\AdapterInterface;
 use SimpSpector\Analyser\Formatter\Adapter\DetailAdapter;
 use SimpSpector\Analyser\Formatter\Adapter\JsonAdapter;
 use SimpSpector\Analyser\Formatter\Adapter\SummaryAdapter;
+use SimpSpector\Analyser\Formatter\Adapter\XmlAdapter;
 use SimpSpector\Analyser\Result;
 
 /**
@@ -57,6 +58,7 @@ class Formatter implements FormatterInterface
         $formatter->registerAdapter(new SummaryAdapter());
         $formatter->registerAdapter(new DetailAdapter());
         $formatter->registerAdapter(new JsonAdapter());
+        $formatter->registerAdapter(new XmlAdapter());
 
         return $formatter;
     }

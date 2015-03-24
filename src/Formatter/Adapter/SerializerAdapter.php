@@ -3,6 +3,7 @@
 namespace SimpSpector\Analyser\Formatter\Adapter;
 
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -21,6 +22,6 @@ abstract class SerializerAdapter implements AdapterInterface
      */
     public function __construct()
     {
-        $this->serializer = new Serializer([new GetSetMethodNormalizer()], [new JsonEncoder()]);
+        $this->serializer = new Serializer([new GetSetMethodNormalizer()], [new JsonEncoder(), new XmlEncoder()]);
     }
 }
