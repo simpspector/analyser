@@ -27,7 +27,7 @@ class SimpleHighlightListener
                 continue;
             }
 
-            $issue->setDescription(HighlightHelper::createCodeSnippet($path, $issue));
+            $issue->setDescription(HighlightHelper::createCodeSnippet($path, $issue, 5, true));
         }
     }
 }
