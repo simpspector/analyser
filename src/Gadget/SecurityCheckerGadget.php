@@ -74,7 +74,7 @@ class SecurityCheckerGadget implements GadgetInterface
      */
     public function getName()
     {
-        return 'security-checker';
+        return 'security_checker';
     }
 
     /**
