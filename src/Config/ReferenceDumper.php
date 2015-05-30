@@ -38,7 +38,7 @@ class ReferenceDumper
             $children = $node->getChildren();
 
             if (!isset($children[$gadget])) {
-                throw new \Exception(sprintf(''));
+                throw new \Exception(sprintf('gadget "%s" not exists', $gadget));
             }
 
             $node = $children[$gadget];
