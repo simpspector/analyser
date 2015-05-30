@@ -69,6 +69,18 @@ class AnalyserBuilder
     }
 
     /**
+     * @return EventDispatcherInterface
+     */
+    public function getEventDispatcher()
+    {
+        if (!$this->dispatcher) {
+            $this->dispatcher = new EventDispatcher();
+        }
+
+        return $this->dispatcher;
+    }
+
+    /**
      * @param RepositoryInterface $repository
      * @return $this
      */
@@ -77,6 +89,18 @@ class AnalyserBuilder
         $this->repository = $repository;
 
         return $this;
+    }
+
+    /**
+     * @return Repository
+     */
+    public function getRepository()
+    {
+        if (!$this->repository) {
+            $this->repository = new Repository();
+        }
+
+        return $this->repository;
     }
 
     /**
@@ -116,8 +140,8 @@ class AnalyserBuilder
      */
     public function build()
     {
-        $dispatcher = $this->dispatcher ?: new EventDispatcher();
-        $repository = $this->repository ?: new Repository();
+        $dispatcher = $this->getEventDispatcher();
+        $repository = $this->getRepository();
         $loader     = $this->loader ?: new ConfigLoader(new YamlLoader(), $repository);
 
         if ($this->enableDefaultListener) {

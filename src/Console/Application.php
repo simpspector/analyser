@@ -5,8 +5,10 @@ namespace SimpSpector\Analyser\Console;
 use SimpSpector\Analyser\Analyser;
 use SimpSpector\Analyser\AnalyserBuilder;
 use SimpSpector\Analyser\Console\Command\AnalyseCommand;
+use SimpSpector\Analyser\Console\Command\ConfigDumpReferenceCommand;
 use SimpSpector\Analyser\Formatter\Formatter;
 use SimpSpector\Analyser\Formatter\FormatterInterface;
+use SimpSpector\Analyser\Repository\RepositoryInterface;
 use Symfony\Component\Console\Application as BaseApplication;
 
 /**
@@ -16,14 +18,16 @@ class Application extends BaseApplication
 {
     /**
      * @param Analyser $analyser
+     * @param RepositoryInterface $repository
      * @param FormatterInterface $formatter
      * @internal param string $bin
      */
-    public function __construct(Analyser $analyser, FormatterInterface $formatter)
+    public function __construct(Analyser $analyser, RepositoryInterface $repository, FormatterInterface $formatter)
     {
         parent::__construct('SimpSpector', 'dev');
 
         $this->add(new AnalyseCommand($analyser, $formatter));
+        $this->add(new ConfigDumpReferenceCommand($repository));
     }
 
     /**
@@ -32,12 +36,13 @@ class Application extends BaseApplication
      */
     public static function create($bin = null)
     {
-        $analyser = (new AnalyserBuilder())
-            ->setBinaryDir($bin)
-            ->build();
+        $buider = (new AnalyserBuilder())
+            ->setBinaryDir($bin);
 
-        $formatter = Formatter::create();
+        $analyser   = $buider->build();
+        $formatter  = Formatter::create();
+        $repository = $buider->getRepository();
 
-        return new self($analyser, $formatter);
+        return new self($analyser, $repository, $formatter);
     }
 }
