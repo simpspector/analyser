@@ -3,6 +3,7 @@
 namespace SimpSpector\Analyser\Importer;
 
 use SimpSpector\Analyser\Importer\Adapter\AdapterInterface;
+use SimpSpector\Analyser\Importer\Adapter\JsonAdapter;
 use SimpSpector\Analyser\Result;
 
 /**
@@ -33,7 +34,6 @@ class Importer implements ImporterInterface
         throw new \Exception('import failed');
     }
 
-
     /**
      * @param AdapterInterface $adapter
      * @throws \Exception
@@ -41,5 +41,16 @@ class Importer implements ImporterInterface
     public function registerAdapter(AdapterInterface $adapter)
     {
         $this->adapters[] = $adapter;
+    }
+
+    /**
+     * @return ImporterInterface
+     */
+    public static function create()
+    {
+        $importer = new self();
+        $importer->registerAdapter(new JsonAdapter());
+
+        return $importer;
     }
 }

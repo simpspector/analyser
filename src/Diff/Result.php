@@ -18,4 +18,9 @@ class Result
      * @var Issue[]
      */
     public $resolvedIssues = [];
+
+    /**
+     * @var Metric[]
+     */
+    public $metricChanges = [];
 }

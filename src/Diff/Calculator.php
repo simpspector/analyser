@@ -17,14 +17,14 @@ class Calculator implements CalculatorInterface
      */
     public function diff(AnalyseResult $from, AnalyseResult $to)
     {
-        $normA = $this->norm($from->getIssues());
-        $normB = $this->norm($to->getIssues());
+        $fromIssues = $this->createIssuesHashMap($from->getIssues());
+        $toIssues = $this->createIssuesHashMap($to->getIssues());
 
         $result = new Result();
 
-        foreach ($normB as $hash => $issue) {
-            if (isset($normA[$hash])) {
-                unset($normA[$hash]);
+        foreach ($toIssues as $hash => $issue) {
+            if (isset($fromIssues[$hash])) {
+                unset($fromIssues[$hash]);
                 continue;
             }
 
@@ -40,7 +40,7 @@ class Calculator implements CalculatorInterface
      * @param Issue[] $issues
      * @return Issue[]
      */
-    private function norm(array $issues)
+    private function createIssuesHashMap(array $issues)
     {
         $norm = [];
 

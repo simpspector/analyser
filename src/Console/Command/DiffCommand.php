@@ -8,6 +8,8 @@ use SimpSpector\Analyser\Diff\Result as DiffResult;
 use SimpSpector\Analyser\Executor\ExecutorInterface;
 use SimpSpector\Analyser\Importer\ImporterInterface;
 use SimpSpector\Analyser\Loader\LoaderInterface;
+use SimpSpector\Analyser\Logger\AbstractLogger;
+use SimpSpector\Analyser\Logger\ConsoleLogger;
 use SimpSpector\Analyser\Result;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -81,13 +83,15 @@ class DiffCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $logger = new ConsoleLogger($output);
+
         $from = rtrim($input->getArgument('from'), '/');
         $to   = rtrim($input->getArgument('to'), '/');
 
+        $fromResult = $this->getResult($from, $logger);
+        $toResult   = $this->getResult($to, $logger);
 
-        $fromResult = $this->getResult($from);
-        $toResult   = $this->getResult($to);
-
+        $logger->writeln("generate diff");
         $diff = $this->calculator->diff($fromResult, $toResult);
 
         $output->writeln($this->format($diff));
@@ -97,15 +101,21 @@ class DiffCommand extends Command
      * @param string $path
      * @return Result
      */
-    private function getResult($path)
+    private function getResult($path, AbstractLogger $logger)
     {
         if (is_file($path)) {
+            $logger->writeln(sprintf('import file "%s"', $path));
             return $this->importer->import($path);
         }
 
-        $config = $this->loader->load($path . '/.simpspector.yml');
+        $file = $path . '/.simpspector.yml';
 
-        return $this->executor->run($path, $config);
+        $logger->writeln(sprintf('load config "%s"', $file));
+        $config = $this->loader->load($file);
+
+        $logger->writeln('execute gadgets');
+
+        return $this->executor->run($path, $config, $logger);
     }
 
     /**
