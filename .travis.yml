@@ -7,14 +7,12 @@ php:
   - 7
   - nightly
   - hhvm
-  - hhvm-nightly
   
 matrix:
   allow_failures:
     - php: 7
     - php: nightly
     - php: hhvm
-    - php: hhvm-nightly
 
 env:
   matrix:
@@ -23,8 +21,8 @@ env:
   
 before_script:
     - travis_retry composer self-update
-    - travis_retry composer update --prefer-source $PREFER_LOWEST
+    - travis_retry composer update $PREFER_LOWEST
 
 script: bin/phpunit
 
-after_success: bin/simpspector ./ -f detail
+after_success: bin/simpspector analyse ./ -f detail
