@@ -64,7 +64,7 @@ class ResultHelper
      * @param Metric $metric
      * @return int
      */
-    private function codeDepth(Metric $metric)
+    private static function codeDepth(Metric $metric)
     {
         return substr_count($metric->getCode(), '.');
     }
