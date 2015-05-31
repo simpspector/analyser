@@ -10,7 +10,6 @@ use SimpSpector\Analyser\Console\Command\DiffCommand;
 use SimpSpector\Analyser\Diff\Calculator;
 use SimpSpector\Analyser\Formatter\Formatter;
 use SimpSpector\Analyser\Formatter\FormatterInterface;
-use SimpSpector\Analyser\Importer\Adapter\JsonAdapter;
 use SimpSpector\Analyser\Importer\Importer;
 use SimpSpector\Analyser\Importer\ImporterInterface;
 use SimpSpector\Analyser\Repository\RepositoryInterface;
