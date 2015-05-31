@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author David Badura <d.a.badura@gmail.com>
  */
-class ConfigDumpReferenceCommand extends Command
+class ReferenceCommand extends Command
 {
     /**
      * @var RepositoryInterface
@@ -36,7 +36,7 @@ class ConfigDumpReferenceCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('dump-config-reference')
+            ->setName('reference')
             ->setDescription('Dump config reference')
             ->addArgument('gadget', InputArgument::OPTIONAL, 'gadget');
     }

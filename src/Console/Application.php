@@ -5,7 +5,7 @@ namespace SimpSpector\Analyser\Console;
 use SimpSpector\Analyser\Analyser;
 use SimpSpector\Analyser\AnalyserBuilder;
 use SimpSpector\Analyser\Console\Command\AnalyseCommand;
-use SimpSpector\Analyser\Console\Command\ConfigDumpReferenceCommand;
+use SimpSpector\Analyser\Console\Command\ReferenceCommand;
 use SimpSpector\Analyser\Formatter\Formatter;
 use SimpSpector\Analyser\Formatter\FormatterInterface;
 use SimpSpector\Analyser\Repository\RepositoryInterface;
@@ -27,7 +27,7 @@ class Application extends BaseApplication
         parent::__construct('SimpSpector', 'dev');
 
         $this->add(new AnalyseCommand($analyser, $formatter));
-        $this->add(new ConfigDumpReferenceCommand($repository));
+        $this->add(new ReferenceCommand($repository));
     }
 
     /**
