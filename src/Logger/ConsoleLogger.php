@@ -28,10 +28,10 @@ class ConsoleLogger extends AbstractLogger
      */
     public function write($message)
     {
-        if ($this->output instanceof Output && !$this->output->isVerbose()) {
-            return;
+        if ($this->output instanceof Output && $this->output->isVerbose() && !$this->output->isVeryVerbose()) {
+            $this->output->write('.');
+        } elseif($this->output instanceof Output && $this->output->isVeryVerbose()) {
+            $this->output->write($message);
         }
-
-        $this->output->write($message);
     }
 } 
