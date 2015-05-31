@@ -2,7 +2,8 @@
 
 namespace SimpSpector\Analyser\Diff;
 
-use SimpSpector\Analyser\Issue;
+use SimpSpector\Analyser\Issue as AnalyseIssue;
+use SimpSpector\Analyser\Metric as AnalyseMetric;
 use SimpSpector\Analyser\Result as AnalyseResult;
 
 /**
@@ -17,10 +18,23 @@ class Calculator implements CalculatorInterface
      */
     public function diff(AnalyseResult $from, AnalyseResult $to)
     {
-        $fromIssues = $this->createIssuesHashMap($from->getIssues());
-        $toIssues = $this->createIssuesHashMap($to->getIssues());
-
         $result = new Result();
+
+        $this->prepareIssueDiff($from, $to, $result);
+        $this->prepareMetricDiff($from, $to, $result);
+
+        return $result;
+    }
+
+    /**
+     * @param AnalyseResult $from
+     * @param AnalyseResult $to
+     * @param Result $result
+     */
+    private function prepareIssueDiff(AnalyseResult $from, AnalyseResult $to, Result $result)
+    {
+        $fromIssues = $this->createIssuesHashMap($from->getIssues());
+        $toIssues   = $this->createIssuesHashMap($to->getIssues());
 
         foreach ($toIssues as $hash => $issue) {
             if (isset($fromIssues[$hash])) {
@@ -31,31 +45,74 @@ class Calculator implements CalculatorInterface
             $result->newIssues[] = $issue;
         }
 
-        $result->resolvedIssues = array_values($normA);
-
-        return $result;
+        $result->resolvedIssues = array_values($fromIssues);
     }
 
     /**
-     * @param Issue[] $issues
-     * @return Issue[]
+     * @param AnalyseResult $from
+     * @param AnalyseResult $to
+     * @param Result $result
+     */
+    private function prepareMetricDiff(AnalyseResult $from, AnalyseResult $to, Result $result)
+    {
+        $fromMetrics = $this->createMetricsHashMap($from->getMetrics());
+        $toMetrics   = $this->createMetricsHashMap($to->getMetrics());
+
+        foreach ($toMetrics as $hash => $toMetric) {
+            if (!isset($fromMetrics[$hash])) {
+                continue;
+            }
+
+            $fromMetric = $fromMetrics[$hash];
+
+            if ($fromMetric->getValue() == $toMetric->getValue()) {
+                continue;
+            }
+
+            $metric       = new Metric();
+            $metric->from = $fromMetric;
+            $metric->to   = $toMetric;
+            $metric->diff = $toMetric->getValue() - $fromMetric->getValue();
+
+            $result->metricChanges[] = $metric;
+        }
+    }
+
+    /**
+     * @param AnalyseIssue[] $issues
+     * @return AnalyseIssue[]
      */
     private function createIssuesHashMap(array $issues)
     {
-        $norm = [];
+        $hashMap = [];
 
         foreach ($issues as $issue) {
-            $norm[$this->hash($issue)] = $issue;
+            $hashMap[$this->hash($issue)] = $issue;
         }
 
-        return $norm;
+        return $hashMap;
     }
 
     /**
-     * @param Issue $issue
+     * @param AnalyseMetric[] $metrics
+     * @return AnalyseMetric[]
+     */
+    private function createMetricsHashMap(array $metrics)
+    {
+        $hashMap = [];
+
+        foreach ($metrics as $metric) {
+            $hashMap[$metric->getCode()] = $metric;
+        }
+
+        return $hashMap;
+    }
+
+    /**
+     * @param AnalyseIssue $issue
      * @return string
      */
-    private function hash(Issue $issue)
+    private function hash(AnalyseIssue $issue)
     {
         return md5($issue->getGadget() . $issue->getFile() . $issue->getLine() . $issue->getTitle());
     }
