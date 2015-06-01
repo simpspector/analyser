@@ -3,6 +3,7 @@
 namespace SimpSpector\Analyser\Loader;
 
 use SimpSpector\Analyser\Config\NodeBuilder;
+use SimpSpector\Analyser\Config\TreeFactory;
 use SimpSpector\Analyser\Repository\RepositoryInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\NodeInterface;
@@ -39,28 +40,11 @@ class ConfigLoader implements LoaderInterface
     public function load($path)
     {
         $config = $this->loader->load($path);
-        $tree = $this->buildTree();
+        $tree = (new TreeFactory())->createTree($this->repository);
 
         $config = $tree->normalize($config);
         $config = $tree->finalize($config);
 
         return $config;
-    }
-
-    /**
-     * @return NodeInterface
-     */
-    private function buildTree()
-    {
-        $builder = new TreeBuilder();
-        $rootNode = $builder->root('simpspector', 'array', new NodeBuilder());
-        $children = $rootNode->children();
-
-        foreach ($this->repository->all() as $gadget) {
-            $gadgetNode = $children->arrayNode($gadget->getName());
-            $gadget->configure($gadgetNode);
-        }
-
-        return $builder->buildTree();
     }
 }
