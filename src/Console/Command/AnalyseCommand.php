@@ -68,6 +68,8 @@ class AnalyseCommand extends Command
             new ConsoleLogger($output)
         );
 
+        $output->writeln("");
+        $output->writeln("");
         $output->writeln($this->formatter->format($result, $input->getOption('format')));
     }
 }
