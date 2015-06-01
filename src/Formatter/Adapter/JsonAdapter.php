@@ -2,6 +2,7 @@
 
 namespace SimpSpector\Analyser\Formatter\Adapter;
 
+use JMS\Serializer\SerializationContext;
 use SimpSpector\Analyser\Result;
 
 /**
@@ -15,7 +16,7 @@ class JsonAdapter extends SerializerAdapter
      */
     public function format(Result $result)
     {
-        return $this->serializer->serialize($result, 'json', ['json_encode_options' => JSON_PRETTY_PRINT]);
+        return $this->serializer->serialize($result, 'json');
     }
 
     /**

@@ -48,8 +48,9 @@ class AnalyseCommand extends Command
             ->setName('analyse')
             ->setDescription('Analyse Project')
             ->addArgument('path', InputArgument::REQUIRED, 'path to the project')
-            ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'path to .simpspector.yml', null)
-            ->addOption('format', 'f', InputOption::VALUE_OPTIONAL, '[summary|detail|json]', 'summary');
+            ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'path to .simpspector.yml')
+            ->addOption('format', 'f', InputOption::VALUE_OPTIONAL, '[summary|detail|json]', 'summary')
+            ->addOption('output', 'o', InputOption::VALUE_OPTIONAL, 'Output file');
 
     }
 
@@ -68,8 +69,14 @@ class AnalyseCommand extends Command
             new ConsoleLogger($output)
         );
 
-        $output->writeln("");
-        $output->writeln("");
-        $output->writeln($this->formatter->format($result, $input->getOption('format')));
+        $string = $this->formatter->format($result, $input->getOption('format'));
+
+        if ($file = $input->getOption('output')) {
+            file_put_contents($file, $string);
+        } else {
+            $output->writeln("");
+            $output->writeln("");
+            $output->writeln($string);
+        }
     }
 }
