@@ -69,7 +69,6 @@ class AnalyseCommand extends Command
             new ConsoleLogger($output)
         );
 
-        $output->writeln($this->formatter->format($result, $input->getOption('format')));
         $string = $this->formatter->format($result, $input->getOption('format'));
 
         if ($file = $input->getOption('output')) {
