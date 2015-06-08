@@ -16,3 +16,10 @@ comment_blacklist:
   blacklist:
     todo: notice
     "dont commit": error
+doc_block:
+  files: src/
+  missing_docblock: error
+  missing_newline_before_return: notice
+  obsolete_variable: notice
+  missing_variable: notice
+  type_missmatch: notice

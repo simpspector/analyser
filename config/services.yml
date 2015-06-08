@@ -70,6 +70,11 @@ services:
         tags:
             - { name: "simpspector.analyser.gadget" }
 
+     simpspecotr.analyser.gadget.doc_block:
+        class: "SimpSpector\Analyser\Gadget\DocBlockGadget"
+        tags:
+            - { name: "simpspector.analyser.gadget" }
+
 
      # Events
      simpspector.analyser.event.listener.simple_highlight:

@@ -27,7 +27,10 @@
         "simpspector/twig-lint": "~1.1",
         "davidbadura/markdown-builder": "~1.0.3",
         "jms/serializer": "0.16.*",
-        "webmozart/path-util": "^2.1"
+        "webmozart/path-util": "^2.0",
+        "symfony/config": "~2.6",
+        "phpunit/php-token-stream": "1.*",
+        "phpdocumentor/reflection-docblock": "~2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0",

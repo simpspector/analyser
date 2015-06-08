@@ -7,10 +7,7 @@ use SimpSpector\Analyser\Issue;
 use Symfony\Component\Config\Definition\Builder\EnumNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeParentInterface;
 
-/**
- * @author David Badura <d.a.badura@gmail.com>
- */
-class LevelNodeDefinition extends EnumNodeDefinition
+class NullableLevelNodeDefinition extends EnumNodeDefinition
 {
     /**
      * @param string $name
@@ -21,6 +18,7 @@ class LevelNodeDefinition extends EnumNodeDefinition
         parent::__construct($name, $parent);
 
         $this->values([
+            null,
             Issue::LEVEL_CRITICAL,
             Issue::LEVEL_ERROR,
             Issue::LEVEL_WARNING,
