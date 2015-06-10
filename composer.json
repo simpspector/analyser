@@ -17,6 +17,7 @@
         "symfony/finder": "~2.6",
         "symfony/process": "~2.6",
         "symfony/serializer": "~2.6",
+        "pdepend/pdepend": "~2.0.4",
         "phpmd/phpmd": "~2.1",
         "squizlabs/php_codesniffer": "~2.0",
         "sensiolabs/security-checker": "~2.0",
