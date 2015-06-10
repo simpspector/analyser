@@ -23,7 +23,7 @@
         "sensiolabs/security-checker": "~2.0",
         "nikic/php-parser": "~1.2.0",
         "asm89/twig-lint": "dev-fix/twig-gt-1.16.2",
-        "davidbadura/markdown-builder": "~1.0.1",
+        "davidbadura/markdown-builder": "~1.0.3",
         "symfony/config": "~2.6",
         "jms/serializer": "0.16.*"
     },
