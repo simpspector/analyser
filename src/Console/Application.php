@@ -3,17 +3,16 @@
 namespace SimpSpector\Analyser\Console;
 
 use SimpSpector\Analyser\Analyser;
-use SimpSpector\Analyser\AnalyserBuilder;
 use SimpSpector\Analyser\Console\Command\AnalyseCommand;
-use SimpSpector\Analyser\Console\Command\ReferenceCommand;
 use SimpSpector\Analyser\Console\Command\DiffCommand;
+use SimpSpector\Analyser\Console\Command\ReferenceCommand;
+use SimpSpector\Analyser\DependencyInjection\ContainerConfigurator;
 use SimpSpector\Analyser\Diff\Calculator;
-use SimpSpector\Analyser\Formatter\Formatter;
 use SimpSpector\Analyser\Formatter\FormatterInterface;
-use SimpSpector\Analyser\Importer\Importer;
 use SimpSpector\Analyser\Importer\ImporterInterface;
 use SimpSpector\Analyser\Repository\RepositoryInterface;
 use Symfony\Component\Console\Application as BaseApplication;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
@@ -26,8 +25,12 @@ class Application extends BaseApplication
      * @param FormatterInterface $formatter
      * @param ImporterInterface $importer
      */
-    public function __construct(Analyser $analyser, RepositoryInterface $repository, FormatterInterface $formatter, ImporterInterface $importer)
-    {
+    public function __construct(
+        Analyser $analyser,
+        RepositoryInterface $repository,
+        FormatterInterface $formatter,
+        ImporterInterface $importer
+    ) {
         parent::__construct('SimpSpector', 'dev');
 
         $this->add(new AnalyseCommand($analyser, $formatter));
@@ -41,14 +44,19 @@ class Application extends BaseApplication
      */
     public static function create($bin = null)
     {
-        $buider = (new AnalyserBuilder())
-            ->setBinaryDir($bin);
+        $bin = $bin ? rtrim($bin, '/') . '/' : '';
 
-        $analyser   = $buider->build();
-        $repository = $buider->getRepository();
+        $container = new ContainerBuilder();
+        $container->setParameter('simpspector.analyser.bin', $bin);
 
-        $formatter = Formatter::create();
-        $importer  = Importer::create();
+        (new ContainerConfigurator())->prepare($container);
+
+        $container->compile();
+
+        $analyser   = $container->get('simpspector.analyser');
+        $repository = $container->get('simpspector.analyser.repository');
+        $formatter  = $container->get('simpspector.analyser.formatter');
+        $importer   = $container->get('simpspector.analyser.importer');
 
         return new self($analyser, $repository, $formatter, $importer);
     }

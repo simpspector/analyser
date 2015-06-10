@@ -1,0 +1,138 @@
+parameters:
+    simpspector.analyser.bin: ""
+    simpspector.analyser.gadget.phpmd.bin: "%simpspector.analyser.bin%phpmd"
+    simpspector.analyser.gadget.phpcs.bin: "%simpspector.analyser.bin%phpcs"
+    simpspector.analyser.gadget.security_checker.bin: "%simpspector.analyser.bin%security-checker"
+
+services:
+     simpspector.analyser:
+         class: "SimpSpector\Analyser\Analyser"
+         arguments:
+            - "@simpspector.analyser.executor"
+            - "@simpspector.analyser.loader"
+
+     simpspector.analyser.executor:
+         class: "SimpSpector\Analyser\Executor\Executor"
+         arguments:
+            - "@simpspector.analyser.repository"
+            - "@simpspector.analyser.event_dispatcher"
+
+     simpspector.analyser.repository:
+        class: "SimpSpector\Analyser\Repository\Repository"
+
+     simpspector.analyser.event_dispatcher:
+        class: "Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher"
+        arguments:
+            - "@service_container"
+
+     # Gadgets
+     simpspecotr.analyser.gadget.comment_blacklist:
+        class: "SimpSpector\Analyser\Gadget\CommentBlacklistGadget"
+        tags:
+            - { name: "simpspector.analyser.gadget" }
+
+     simpspecotr.analyser.gadget.function_blacklist:
+        class: "SimpSpector\Analyser\Gadget\FunctionBlacklistGadget"
+        tags:
+            - { name: "simpspector.analyser.gadget" }
+
+     simpspecotr.analyser.gadget.phpcs:
+        class: "SimpSpector\Analyser\Gadget\\PhpcsGadget"
+        arguments:
+            - "%simpspector.analyser.gadget.phpcs.bin%"
+        tags:
+            - { name: "simpspector.analyser.gadget" }
+
+     simpspecotr.analyser.gadget.phpmd:
+        class: "SimpSpector\Analyser\Gadget\\PhpmdGadget"
+        arguments:
+            - "%simpspector.analyser.gadget.phpmd.bin%"
+        tags:
+            - { name: "simpspector.analyser.gadget" }
+
+     simpspecotr.analyser.gadget.security_checker:
+        class: "SimpSpector\Analyser\Gadget\SecurityCheckerGadget"
+        arguments:
+            - "%simpspector.analyser.gadget.security_checker.bin%"
+        tags:
+            - { name: "simpspector.analyser.gadget" }
+
+     simpspecotr.analyser.gadget.twig_lint:
+        class: "SimpSpector\Analyser\Gadget\TwigLintGadget"
+        tags:
+            - { name: "simpspector.analyser.gadget" }
+
+     # Events
+     simpspector.analyser.event.listener.simple_highlight:
+        class: "SimpSpector\Analyser\Event\\Listener\SimpleHighlightListener"
+        tags:
+            -
+                name: "simpspector.analyser.listener"
+                event: "simpspector.analyser.post_gadget"
+                method: "onGadgetResult"
+
+     simpspector.analyser.event.listener.clean_path:
+        class: "SimpSpector\Analyser\Event\\Listener\CleanPathListener"
+        tags:
+            -
+                name: "simpspector.analyser.listener"
+                event: "simpspector.analyser.post_gadget"
+                method: "onGadgetResult"
+                priority: 100
+
+     simpspector.analyser.event.subscriber.logger:
+        class: "SimpSpector\Analyser\Event\Subscriber\\LoggerSubscriber"
+        tags:
+            -
+                name: "simpspector.analyser.subscriber"
+
+     simpspector.analyser.event.subscriber.metrics_collector:
+        class: "SimpSpector\Analyser\Event\Subscriber\MetricsCollectorSubscriber"
+        tags:
+            -
+                name: "simpspector.analyser.subscriber"
+
+     # Loader
+     simpspector.analyser.loader: "@simpspector.analyser.loader.config"
+
+     simpspector.analyser.loader.config:
+        class: "SimpSpector\Analyser\\Loader\ConfigLoader"
+        arguments:
+            - "@simpspector.analyser.loader.yaml"
+            - "@simpspector.analyser.repository"
+
+     simpspector.analyser.loader.yaml:
+        class: "SimpSpector\Analyser\\Loader\YamlLoader"
+
+     # Formatter
+     simpspector.analyser.formatter:
+        class: "SimpSpector\Analyser\Formatter\Formatter"
+
+     simpspector.analyser.formatter.detail:
+        class: "SimpSpector\Analyser\Formatter\Adapter\DetailAdapter"
+        tags:
+            - { name: "simpspector.analyser.formatter" }
+
+     simpspector.analyser.formatter.summary:
+        class: "SimpSpector\Analyser\Formatter\Adapter\SummaryAdapter"
+        tags:
+            - { name: "simpspector.analyser.formatter" }
+
+     simpspector.analyser.formatter.json:
+        class: "SimpSpector\Analyser\Formatter\Adapter\JsonAdapter"
+        tags:
+            - { name: "simpspector.analyser.formatter" }
+
+     simpspector.analyser.formatter.xml:
+        class: "SimpSpector\Analyser\Formatter\Adapter\XmlAdapter"
+        tags:
+            - { name: "simpspector.analyser.formatter" }
+
+     # Importer
+     simpspector.analyser.importer:
+        class: "SimpSpector\Analyser\Importer\Importer"
+
+     simpspector.analyser.importer.json:
+        class: "SimpSpector\Analyser\Importer\Adapter\JsonAdapter"
+        tags:
+            - { name: "simpspector.analyser.importer" }

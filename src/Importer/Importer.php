@@ -42,15 +42,4 @@ class Importer implements ImporterInterface
     {
         $this->adapters[] = $adapter;
     }
-
-    /**
-     * @return ImporterInterface
-     */
-    public static function create()
-    {
-        $importer = new self();
-        $importer->registerAdapter(new JsonAdapter());
-
-        return $importer;
-    }
 }
