@@ -34,7 +34,6 @@ class Formatter implements FormatterInterface
         return $this->adapters[$format]->format($result);
     }
 
-
     /**
      * @param AdapterInterface $adapter
      * @throws \Exception
@@ -46,20 +45,5 @@ class Formatter implements FormatterInterface
         }
 
         $this->adapters[$adapter->getName()] = $adapter;
-    }
-
-    /**
-     * @return Formatter
-     * @throws \Exception
-     */
-    public static function create()
-    {
-        $formatter = new Formatter();
-        $formatter->registerAdapter(new SummaryAdapter());
-        $formatter->registerAdapter(new DetailAdapter());
-        $formatter->registerAdapter(new JsonAdapter());
-        $formatter->registerAdapter(new XmlAdapter());
-
-        return $formatter;
     }
 }

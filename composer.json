@@ -17,6 +17,8 @@
         "symfony/finder": "~2.6",
         "symfony/process": "~2.6",
         "symfony/serializer": "~2.6",
+        "symfony/dependency-injection": "~2.6",
+        "symfony/config": "~2.6",
         "pdepend/pdepend": "~2.0.4",
         "phpmd/phpmd": "~2.1",
         "squizlabs/php_codesniffer": "~2.0",
@@ -24,7 +26,6 @@
         "nikic/php-parser": "~1.2.0",
         "asm89/twig-lint": "dev-fix/twig-gt-1.16.2",
         "davidbadura/markdown-builder": "~1.0.3",
-        "symfony/config": "~2.6",
         "jms/serializer": "0.16.*"
     },
     "require-dev": {
