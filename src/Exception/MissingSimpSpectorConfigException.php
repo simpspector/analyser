@@ -7,8 +7,11 @@ namespace SimpSpector\Analyser\Exception;
  */
 class MissingSimpSpectorConfigException extends \Exception
 {
+    /**
+     *
+     */
     public function __construct()
     {
-        parent::__construct("missing simpspector.yml");
+        parent::__construct("missing .simpspector.yml");
     }
 }

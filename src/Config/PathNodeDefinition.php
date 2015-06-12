@@ -21,6 +21,7 @@ class PathNodeDefinition extends ScalarNodeDefinition
         $this->validate()
             ->ifTrue(function ($value) {
                 $value = trim($value);
+
                 return strpos($value, '..') !== false || strpos($value, '/') === 0;
             })
             ->thenInvalid('path is not allowed');

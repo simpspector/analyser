@@ -32,4 +32,4 @@ interface RepositoryInterface
      * @throws \Exception
      */
     public function get($name);
-} 
+}

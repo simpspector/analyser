@@ -12,6 +12,7 @@ class XmlAdapter extends SerializerAdapter
 {
     /**
      * @param Result $result
+     * @return string
      */
     public function format(Result $result)
     {

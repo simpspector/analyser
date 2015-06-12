@@ -105,6 +105,7 @@ class DiffCommand extends Command
     {
         if (is_file($path)) {
             $logger->writeln(sprintf('import file "%s"', $path));
+
             return $this->importer->import($path);
         }
 
@@ -120,6 +121,7 @@ class DiffCommand extends Command
 
     /**
      * @param DiffResult $result
+     *
      * @return string
      */
     private function format(DiffResult $result)

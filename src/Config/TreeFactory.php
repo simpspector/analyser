@@ -17,7 +17,7 @@ class TreeFactory
      */
     public function createTree(RepositoryInterface $repository)
     {
-        $builder = new TreeBuilder();
+        $builder  = new TreeBuilder();
         $rootNode = $builder->root('simpspector', 'array', new NodeBuilder());
         $children = $rootNode->children();
 
