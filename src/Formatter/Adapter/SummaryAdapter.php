@@ -19,7 +19,7 @@ class SummaryAdapter implements AdapterInterface
      */
     public function format(Result $result)
     {
-        $issues = ResultHelper::sortIssues($result->getIssues());
+        $issues  = ResultHelper::sortIssues($result->getIssues());
         $metrics = ResultHelper::sortMetrics($result->getMetrics());
 
         $markdown = new MarkdownBuilder();

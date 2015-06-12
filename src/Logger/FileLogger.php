@@ -22,7 +22,7 @@ class FileLogger extends AbstractLogger
      */
     public function __construct($file)
     {
-        $this->file = $file;
+        $this->file    = $file;
         $this->handler = fopen($this->file, 'a');
     }
 
@@ -33,4 +33,4 @@ class FileLogger extends AbstractLogger
     {
         fwrite($this->handler, $message);
     }
-} 
+}

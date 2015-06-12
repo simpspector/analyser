@@ -19,4 +19,4 @@ abstract class AbstractLogger
      * @param string $message
      */
     abstract public function write($message);
-} 
+}

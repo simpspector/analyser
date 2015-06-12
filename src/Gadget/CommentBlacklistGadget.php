@@ -109,7 +109,6 @@ class CommentBlacklistGadget implements GadgetInterface
 
         foreach (explode("\n", $comment['content']) as $lineOffset => $line) {
             foreach ($options['blacklist'] as $blacklistedWord => $errorLevel) {
-
                 if (stristr($line, $blacklistedWord) === false) {
                     continue;
                 }

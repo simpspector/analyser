@@ -40,7 +40,7 @@ class ConfigLoader implements LoaderInterface
     public function load($path)
     {
         $config = $this->loader->load($path);
-        $tree = (new TreeFactory())->createTree($this->repository);
+        $tree   = (new TreeFactory())->createTree($this->repository);
 
         $config = $tree->normalize($config);
         $config = $tree->finalize($config);

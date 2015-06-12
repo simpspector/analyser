@@ -9,9 +9,9 @@ use SimpSpector\Analyser\Gadget\GadgetInterface;
  */
 class Issue
 {
-    const LEVEL_NOTICE   = 'notice';
-    const LEVEL_WARNING  = 'warning';
-    const LEVEL_ERROR    = 'error';
+    const LEVEL_NOTICE = 'notice';
+    const LEVEL_WARNING = 'warning';
+    const LEVEL_ERROR = 'error';
     const LEVEL_CRITICAL = 'critical';
 
     /**

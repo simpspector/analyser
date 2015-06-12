@@ -100,7 +100,7 @@ class Executor implements ExecutorInterface
 
     /**
      * @param GadgetInterface $gadget
-     * @param $path
+     * @param string $path
      * @param array $options
      * @param AbstractLogger $logger
      * @return Result
@@ -127,4 +127,4 @@ class Executor implements ExecutorInterface
     {
         return realpath($path);
     }
-} 
+}
