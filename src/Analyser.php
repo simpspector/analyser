@@ -24,7 +24,7 @@ class Analyser
 
     /**
      * @param ExecutorInterface $executor
-     * @param LoaderInterface $loader
+     * @param LoaderInterface   $loader
      */
     public function __construct(ExecutorInterface $executor, LoaderInterface $loader)
     {
@@ -33,8 +33,8 @@ class Analyser
     }
 
     /**
-     * @param string $path
-     * @param string|null $configFile
+     * @param string         $path
+     * @param string|null    $configFile
      * @param AbstractLogger $logger
      * @return Result
      */

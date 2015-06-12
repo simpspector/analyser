@@ -98,8 +98,13 @@ services:
      simpspector.analyser.loader.config:
         class: "SimpSpector\Analyser\\Loader\ConfigLoader"
         arguments:
-            - "@simpspector.analyser.loader.yaml"
+            - "@simpspector.analyser.loader.legacy_filename"
             - "@simpspector.analyser.repository"
+
+     simpspector.analyser.loader.legacy_filename:
+        class: "SimpSpector\Analyser\\Loader\\LegacyFilenameLoader"
+        arguments:
+            - "@simpspector.analyser.loader.yaml"
 
      simpspector.analyser.loader.yaml:
         class: "SimpSpector\Analyser\\Loader\YamlLoader"
