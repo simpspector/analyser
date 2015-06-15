@@ -10,12 +10,12 @@ class Result
     /**
      * @var Issue[]
      */
-    private $issues;
+    protected $issues;
 
     /**
      * @var Metric[]
      */
-    private $metrics;
+    protected $metrics;
 
     /**
      * @param Issue[] $issues
