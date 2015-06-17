@@ -14,6 +14,7 @@ use SimpSpector\Analyser\Repository\RepositoryInterface;
 use SimpSpector\Analyser\Result;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Webmozart\PathUtil\Path;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
@@ -48,7 +49,7 @@ class Executor implements ExecutorInterface
      */
     public function run($path, array $config, AbstractLogger $logger = null)
     {
-        $path   = $this->preparePath($path);
+        $path   = Path::canonicalize($path);
         $logger = $logger ?: new NullLogger();
 
         $event = new ExecutorEvent($path, $config, $logger);
@@ -117,14 +118,5 @@ class Executor implements ExecutorInterface
         $this->eventDispatcher->dispatch(Events::POST_GADGET, $event);
 
         return $result;
-    }
-
-    /**
-     * @param $path
-     * @return string
-     */
-    private function preparePath($path)
-    {
-        return realpath($path);
     }
 }

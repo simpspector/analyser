@@ -3,7 +3,7 @@
 namespace SimpSpector\Analyser\Event\Listener;
 
 use SimpSpector\Analyser\Event\GadgetResultEvent;
-use SimpSpector\Analyser\Util\FilesystemHelper;
+use Webmozart\PathUtil\Path;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
@@ -23,7 +23,7 @@ class CleanPathListener
                 continue;
             }
 
-            $issue->setFile(FilesystemHelper::cleanPath($path, $issue->getFile()));
+            $issue->setFile(Path::makeRelative($issue->getFile(), $path));
         }
     }
 }

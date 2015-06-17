@@ -3,6 +3,7 @@
 namespace SimpSpector\Analyser\Util;
 
 use SimpSpector\Analyser\Issue;
+use Webmozart\PathUtil\Path;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
@@ -19,7 +20,7 @@ class HighlightHelper
     public static function createCodeSnippet($path, Issue $issue, $around = 5, $attr = false)
     {
         $snippet = SnippetHelper::createSnippetByFile(
-            $path . '/' . $issue->getFile(),
+            Path::join($path, $issue->getFile()),
             $issue->getLine(),
             $around
         );

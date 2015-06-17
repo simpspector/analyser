@@ -15,6 +15,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Webmozart\PathUtil\Path;
 
 /**
  *
@@ -85,8 +86,8 @@ class DiffCommand extends Command
     {
         $logger = new ConsoleLogger($output);
 
-        $from = rtrim($input->getArgument('from'), '/');
-        $to   = rtrim($input->getArgument('to'), '/');
+        $from = Path::canonicalize($input->getArgument('from'));
+        $to   = Path::canonicalize($input->getArgument('to'));
 
         $fromResult = $this->getResult($from, $logger);
         $toResult   = $this->getResult($to, $logger);
@@ -99,6 +100,7 @@ class DiffCommand extends Command
 
     /**
      * @param string $path
+     * @param AbstractLogger $logger
      * @return Result
      */
     private function getResult($path, AbstractLogger $logger)
@@ -109,7 +111,7 @@ class DiffCommand extends Command
             return $this->importer->import($path);
         }
 
-        $file = $path . '/.simpspector.yml';
+        $file = Path::join($path, '.simpspector.yml');
 
         $logger->writeln(sprintf('load config "%s"', $file));
         $config = $this->loader->load($file);

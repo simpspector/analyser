@@ -6,6 +6,7 @@ use SimpSpector\Analyser\Executor\ExecutorInterface;
 use SimpSpector\Analyser\Loader\LoaderInterface;
 use SimpSpector\Analyser\Logger\AbstractLogger;
 use SimpSpector\Analyser\Logger\NullLogger;
+use Webmozart\PathUtil\Path;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
@@ -24,7 +25,7 @@ class Analyser
 
     /**
      * @param ExecutorInterface $executor
-     * @param LoaderInterface   $loader
+     * @param LoaderInterface $loader
      */
     public function __construct(ExecutorInterface $executor, LoaderInterface $loader)
     {
@@ -33,18 +34,18 @@ class Analyser
     }
 
     /**
-     * @param string         $path
-     * @param string|null    $configFile
+     * @param string $path
+     * @param string|null $configFile
      * @param AbstractLogger $logger
      * @return Result
      */
     public function analyse($path, $configFile = null, AbstractLogger $logger = null)
     {
         $logger = $logger ?: new NullLogger();
-        $path   = rtrim($path, '/');
+        $path   = Path::makeAbsolute($path, getcwd());
 
         if (!$configFile) {
-            $configFile = $path . '/.simpspector.yml';
+            $configFile = Path::join([$path, '.simpspector.yml']);
         }
 
         $config = $this->loader->load($configFile);
