@@ -3,6 +3,7 @@
 namespace SimpSpector\Analyser;
 
 use SimpSpector\Analyser\Gadget\GadgetInterface;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
@@ -16,36 +17,50 @@ class Issue
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private $title;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private $gadget;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private $level;
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private $file;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("integer")
      */
     private $line;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private $description;
 
     /**
      * @var array
+     *
+     * @Serializer\Type("array")
      */
     private $extraInformation;
 

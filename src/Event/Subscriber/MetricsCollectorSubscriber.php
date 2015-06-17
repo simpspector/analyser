@@ -49,8 +49,7 @@ class MetricsCollectorSubscriber implements EventSubscriberInterface
                 new Metric(
                     sprintf("Count %ss in %s", $level, $gadget->getName()),
                     sprintf("%s.count.%s", $gadget->getName(), $level),
-                    $count,
-                    Metric::TYPE_COUNT
+                    $count
                 )
             );
         }
@@ -79,8 +78,7 @@ class MetricsCollectorSubscriber implements EventSubscriberInterface
                 new Metric(
                     sprintf("Count %ss", $level),
                     sprintf("count.%s", $level),
-                    $count,
-                    Metric::TYPE_COUNT
+                    $count
                 )
             );
         }

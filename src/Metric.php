@@ -2,43 +2,38 @@
 
 namespace SimpSpector\Analyser;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * @author David Badura <d.a.badura@gmail.com>
  */
 class Metric
 {
     /**
-     *
-     */
-    const TYPE_COUNT = 'count';
-
-    /**
-     *  from 0-100
-     */
-    const TYPE_RATING = 'rating';
-
-    /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private $title;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private $code;
 
     /**
-     * @var string
-     */
-    private $type;
-
-    /**
-     * @var int
+     * @var float
+     *
+     * @Serializer\Type("float")
      */
     private $value;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private $description;
 
@@ -46,14 +41,12 @@ class Metric
      * @param string $title
      * @param string $code
      * @param int $value
-     * @param string $type
      */
-    public function __construct($title, $code, $value, $type = self::TYPE_RATING)
+    public function __construct($title, $code, $value)
     {
-        $this->title  = $title;
-        $this->code   = $code;
-        $this->type   = $type;
-        $this->value  = $value;
+        $this->title = $title;
+        $this->code  = $code;
+        $this->value = $value;
     }
 
     /**
@@ -86,22 +79,6 @@ class Metric
     public function setCode($code)
     {
         $this->code = $code;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
     }
 
     /**

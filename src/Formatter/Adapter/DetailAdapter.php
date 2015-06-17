@@ -87,7 +87,6 @@ class DetailAdapter implements AdapterInterface
 
         $markdown->bulletedList([
             'code: ' . $metric->getCode(),
-            'type: ' . $metric->getType(),
             'value: ' . $metric->getValue()
         ]);
 
