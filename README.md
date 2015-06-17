@@ -7,5 +7,8 @@ this is the analyser component to simplethings/simpspector - all the static code
 ## Usage
 
 ``` bash
-bin/simpspector /path/to/project
+bin/simpspector analyse /path/to/project --format=detail
 ```
+
+Example output: https://travis-ci.org/simpspector/analyser/jobs/67263598#L264
+
