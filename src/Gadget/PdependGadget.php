@@ -62,7 +62,7 @@ class PdependGadget implements GadgetInterface
         $result = new Result();
 
         $add = function ($code, $title, $description = null) use ($result, $data) {
-            $metric = new Metric($title, 'pdepend.' . $code, $data['@' . $code]);
+            $metric = new Metric($title, strtolower('pdepend.' . $code), $data['@' . $code]);
             $metric->setDescription($description);
             $result->addMetric($metric);
         };
