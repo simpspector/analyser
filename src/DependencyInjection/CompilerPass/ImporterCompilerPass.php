@@ -23,7 +23,7 @@ class ImporterCompilerPass implements CompilerPassInterface
         $definition     = $container->findDefinition('simpspector.analyser.importer');
         $taggedServices = $container->findTaggedServiceIds('simpspector.analyser.importer');
 
-        foreach ($taggedServices as $id => $tags) {
+        foreach (array_keys($taggedServices) as $id) {
             $definition->addMethodCall('registerAdapter', array(new Reference($id)));
         }
     }

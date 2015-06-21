@@ -23,7 +23,7 @@ class FormatterCompilerPass implements CompilerPassInterface
         $definition     = $container->findDefinition('simpspector.analyser.formatter');
         $taggedServices = $container->findTaggedServiceIds('simpspector.analyser.formatter');
 
-        foreach ($taggedServices as $id => $tags) {
+        foreach (array_keys($taggedServices) as $id) {
             $definition->addMethodCall('registerAdapter', array(new Reference($id)));
         }
     }

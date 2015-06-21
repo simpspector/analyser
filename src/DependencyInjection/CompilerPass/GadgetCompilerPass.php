@@ -23,7 +23,7 @@ class GadgetCompilerPass implements CompilerPassInterface
         $definition     = $container->findDefinition('simpspector.analyser.repository');
         $taggedServices = $container->findTaggedServiceIds('simpspector.analyser.gadget');
 
-        foreach ($taggedServices as $id => $tags) {
+        foreach (array_keys($taggedServices) as $id) {
             $definition->addMethodCall('add', array(new Reference($id)));
         }
     }
