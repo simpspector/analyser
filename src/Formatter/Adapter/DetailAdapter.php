@@ -85,13 +85,13 @@ class DetailAdapter implements AdapterInterface
     {
         $markdown->h2($metric->getTitle());
 
+        if ($metric->getDescription()) {
+            $markdown->p($metric->getDescription());
+        }
+
         $markdown->bulletedList([
             'code: ' . $metric->getCode(),
             'value: ' . $metric->getValue()
         ]);
-
-        if ($metric->getDescription()) {
-            $markdown->p($metric->getDescription());
-        }
     }
 }

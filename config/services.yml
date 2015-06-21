@@ -3,6 +3,7 @@ parameters:
     simpspector.analyser.gadget.phpmd.bin: "%simpspector.analyser.bin%phpmd"
     simpspector.analyser.gadget.phpcs.bin: "%simpspector.analyser.bin%phpcs"
     simpspector.analyser.gadget.security_checker.bin: "%simpspector.analyser.bin%security-checker"
+    simpspector.analyser.gadget.pdepend.bin: "%simpspector.analyser.bin%pdepend"
 
 services:
      simpspector.analyser:
@@ -61,6 +62,14 @@ services:
         class: "SimpSpector\Analyser\Gadget\TwigLintGadget"
         tags:
             - { name: "simpspector.analyser.gadget" }
+
+     simpspecotr.analyser.gadget.pdepend:
+        class: "SimpSpector\Analyser\Gadget\\PdependGadget"
+        arguments:
+            - "%simpspector.analyser.gadget.pdepend.bin%"
+        tags:
+            - { name: "simpspector.analyser.gadget" }
+
 
      # Events
      simpspector.analyser.event.listener.simple_highlight:

@@ -3,6 +3,8 @@ phpcs:
   standards: [PSR1, PSR2]
 phpmd:
   files: src/
+pdepend:
+  files: src/
 function_blacklist:
   files: src/
   blacklist:
