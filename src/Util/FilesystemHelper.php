@@ -11,15 +11,6 @@ class FilesystemHelper
 {
     /**
      * @param string $path
-     * @return string
-     */
-    public static function cleanPath($path, $file)
-    {
-        return ltrim(str_replace($path, '', $file), '/');
-    }
-
-    /**
-     * @param string $path
      * @param string[] $folders
      * @param string $pattern
      * @return array
