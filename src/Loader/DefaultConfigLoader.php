@@ -21,16 +21,16 @@ class DefaultConfigLoader implements LoaderInterface
     /**
      * @var string
      */
-    private $default;
+    private $defaultConfigPath;
 
     /**
      * @param LoaderInterface $loader
      * @param string $default
      */
-    public function __construct(LoaderInterface $loader, $default)
+    public function __construct(LoaderInterface $loader, $defaultConfigPath)
     {
-        $this->loader  = $loader;
-        $this->default = $default;
+        $this->loader            = $loader;
+        $this->defaultConfigPath = $defaultConfigPath;
     }
 
     /**
@@ -42,7 +42,7 @@ class DefaultConfigLoader implements LoaderInterface
         try {
             return $this->loader->load($path);
         } catch (MissingSimpSpectorConfigException $e) {
-            return $this->loader->load($this->default);
+            return $this->loader->load($this->defaultConfigPath);
         }
     }
 }
