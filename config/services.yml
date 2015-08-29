@@ -4,6 +4,7 @@ parameters:
     simpspector.analyser.gadget.phpcs.bin: "%simpspector.analyser.bin%phpcs"
     simpspector.analyser.gadget.security_checker.bin: "%simpspector.analyser.bin%security-checker"
     simpspector.analyser.gadget.pdepend.bin: "%simpspector.analyser.bin%pdepend"
+    simpspector.analyser.loader.default_config: "%simpspector.analyser.config%/default_simpspector.yml"
 
 services:
      simpspector.analyser:
@@ -116,8 +117,14 @@ services:
      simpspector.analyser.loader.config:
         class: "SimpSpector\Analyser\\Loader\ConfigLoader"
         arguments:
-            - "@simpspector.analyser.loader.legacy_filename"
+            - "@simpspector.analyser.loader.default"
             - "@simpspector.analyser.repository"
+
+     simpspector.analyser.loader.default:
+        class: "SimpSpector\Analyser\\Loader\\DefaultConfigLoader"
+        arguments:
+            - "@simpspector.analyser.loader.legacy_filename"
+            - "%simpspector.analyser.loader.default_config%"
 
      simpspector.analyser.loader.legacy_filename:
         class: "SimpSpector\Analyser\\Loader\\LegacyFilenameLoader"
