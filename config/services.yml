@@ -70,11 +70,15 @@ services:
         tags:
             - { name: "simpspector.analyser.gadget" }
 
+     simpsector.analyser.gadget.doc_block.differ:
+        class: "SimpSpector\Analyser\Gadget\DocBlockGadget\Differ"
+
      simpspecotr.analyser.gadget.doc_block:
         class: "SimpSpector\Analyser\Gadget\DocBlockGadget"
+        arguments:
+            - "@simpsector.analyser.gadget.doc_block.differ"
         tags:
             - { name: "simpspector.analyser.gadget" }
-
 
      # Events
      simpspector.analyser.event.listener.simple_highlight:

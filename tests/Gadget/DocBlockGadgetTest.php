@@ -16,7 +16,7 @@ class DocBlockGadgetTest extends GadgetTestCase
 
     protected function setUp()
     {
-        $this->OUT = new DocBlockGadget();
+        $this->OUT = new DocBlockGadget(new DocBlockGadget\Differ());
     }
 
     public function testDefaultConfig()
@@ -27,6 +27,8 @@ class DocBlockGadgetTest extends GadgetTestCase
             'missing_newline_before_return' => 'notice',
             'obsolete_variable'             => 'notice',
             'missing_variable'              => 'notice',
+            'missing_type_in_docblock'      => 'notice',
+            'missing_type_in_signature'     => 'notice',
             'type_missmatch'                => 'notice',
         ], []);
     }
