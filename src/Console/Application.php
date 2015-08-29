@@ -48,6 +48,7 @@ class Application extends BaseApplication
 
         $container = new ContainerBuilder();
         $container->setParameter('simpspector.analyser.bin', $bin);
+        $container->setParameter('simpspector.analyser.config', realpath(__DIR__ . '/../../config'));
 
         (new ContainerConfigurator())->prepare($container);
 
