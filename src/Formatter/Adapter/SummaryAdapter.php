@@ -35,6 +35,11 @@ class SummaryAdapter implements AdapterInterface
             );
         }, $issues));
 
+        foreach ($metrics as $key => $metric) {
+            if ($metric->getValue() == 0) {
+                unset($metrics[$key]);
+            }
+        }
 
         $markdown->h1(count($metrics) . ' Metric(s)');
 
