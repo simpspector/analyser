@@ -36,7 +36,7 @@ class SummaryAdapter implements AdapterInterface
         }, $issues));
 
         $metrics = array_filter($metrics, function (Metric $metric) {
-            return $metric->getValue() > 0;
+            return $metric->getValue() != 0;
         });
 
         $markdown->h1(count($metrics) . ' Metric(s)');
