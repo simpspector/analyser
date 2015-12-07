@@ -25,4 +25,4 @@ before_script:
 
 script:
     - bin/phpunit
-    - bin/simpspector analyse ./ -f detail
+    - bin/simpspector analyse ./ -v -f detail
