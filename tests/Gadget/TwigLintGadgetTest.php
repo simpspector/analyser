@@ -40,7 +40,7 @@ class TwigLintGadgetTest extends GadgetTestCase
 
         $issues = $gadget->run($path, $config, new NullLogger())->getIssues();
         
-        if (version_compare(\Twig_Environment, '1.23.1') >= 0) {
+        if (version_compare(\Twig_Environment::VERSION, '1.23.1') >= 0) {
             $msg = 'Twig_Error_Syntax: Unclosed "block".';
         } else {
             $msg = 'Twig_Error_Syntax: Unclosed "block"';
