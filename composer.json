@@ -9,7 +9,7 @@
         "psr-4": {"SimpSpector\\Analyser\\Tests\\": "tests/"}
     },
     "require": {
-        "php": ">=5.4",
+        "php": "~5.4|~7.0",
         "symfony/console": "~2.7",
         "symfony/event-dispatcher": "~2.7",
         "symfony/yaml": "~2.7",
@@ -19,7 +19,7 @@
         "symfony/serializer": "~2.7",
         "symfony/dependency-injection": "~2.7",
         "symfony/config": "~2.7",
-        "pdepend/pdepend": "~2.0.4",
+        "pdepend/pdepend": "~2.2",
         "phpmd/phpmd": "~2.1",
         "squizlabs/php_codesniffer": "~2.0",
         "sensiolabs/security-checker": "~2.0",
@@ -32,7 +32,7 @@
         "phpdocumentor/reflection-docblock": "~2.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.0",
+        "phpunit/phpunit": "~4.8.20|~5.0",
         "symfony/var-dumper": "~2.7"
     },
     "config": {
