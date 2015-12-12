@@ -27,7 +27,7 @@ class Formatter implements FormatterInterface
      */
     public function format(Result $result, $format)
     {
-        if (!isset($this->adapters[$format])) {
+        if (! $this->formatExists($format)) {
             throw new \Exception(sprintf('format "%s" are not supported', $format));
         }
 
@@ -45,5 +45,14 @@ class Formatter implements FormatterInterface
         }
 
         $this->adapters[$adapter->getName()] = $adapter;
+    }
+
+    /**
+     * @param string $format
+     * @return bool
+     */
+    public function formatExists($format)
+    {
+        return isset($this->adapters[$format]);
     }
 }
