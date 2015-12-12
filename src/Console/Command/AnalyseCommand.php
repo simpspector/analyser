@@ -63,13 +63,22 @@ class AnalyseCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        /** @var string $format */
+        $format = $input->getOption('format');
+
+        if (! $this->formatter->formatExists($format)) {
+            $output->writeln(sprintf('<error>Format "%s" does not exist</error>', $format));
+
+            return;
+        }
+
         $result = $this->analyser->analyse(
             $input->getArgument('path'),
             $input->getOption('config'),
             new ConsoleLogger($output)
         );
 
-        $string = $this->formatter->format($result, $input->getOption('format'));
+        $string = $this->formatter->format($result, $format);
 
         if ($file = $input->getOption('output')) {
             file_put_contents($file, $string);

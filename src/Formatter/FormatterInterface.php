@@ -15,4 +15,10 @@ interface FormatterInterface
      * @return string
      */
     public function format(Result $result, $format);
+
+    /**
+     * @param string $format
+     * @return bool
+     */
+    public function formatExists($format);
 }
