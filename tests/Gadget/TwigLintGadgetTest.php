@@ -39,11 +39,14 @@ class TwigLintGadgetTest extends GadgetTestCase
         $config = $this->resolve($gadget, []);
 
         $issues = $gadget->run($path, $config, new NullLogger())->getIssues();
+        
+        if (version_compare(\Twig_Environment::VERSION, '1.23.1') >= 0) {
+            $msg = 'Twig_Error_Syntax: Unclosed "block".';
+        } else {
+            $msg = 'Twig_Error_Syntax: Unclosed "block"';
+        }
 
-        $expectedIssues = [
-            $this->createIssue($gadget, $path, 'Twig_Error_Syntax: Unclosed "block"', 'one_line_error.html.twig', 11,
-                'error'),
-        ];
+        $expectedIssues = [$this->createIssue($gadget, $path, $msg, 'one_line_error.html.twig', 11, 'error'),];
 
         $this->assertEquals($expectedIssues, $issues);
     }
