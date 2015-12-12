@@ -47,7 +47,7 @@ class AnalyseCommand extends Command
         $this
             ->setName('analyse')
             ->setDescription('Analyse Project')
-            ->addArgument('path', InputArgument::REQUIRED, 'path to the project')
+            ->addArgument('path', InputArgument::OPTIONAL, 'path to the project', '.')
             ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'path to .simpspector.yml')
             ->addOption('format', 'f', InputOption::VALUE_OPTIONAL, '[summary|detail|json]', 'summary')
             ->addOption('output', 'o', InputOption::VALUE_OPTIONAL, 'Output file');
