@@ -4,7 +4,6 @@ namespace SimpSpector\Analyser\Gadget\FunctionBlacklist;
 
 use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
-use SimpSpector\Analyser\Gadget\FunctionBlacklistGadget;
 use SimpSpector\Analyser\Gadget\GadgetInterface;
 use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Result;
@@ -37,14 +36,14 @@ class Visitor extends NodeVisitorAbstract
 
     /**
      * @param GadgetInterface $gadget
-     * @param array $blacklist
-     * @param Result $result
+     * @param array           $blacklist
+     * @param Result          $result
      */
     public function __construct(GadgetInterface $gadget, array $blacklist, Result $result)
     {
-        $this->gadget    = $gadget;
+        $this->gadget = $gadget;
         $this->blacklist = $blacklist;
-        $this->result    = $result;
+        $this->result = $result;
     }
 
     /**
@@ -109,7 +108,7 @@ class Visitor extends NodeVisitorAbstract
 
     /**
      * @param string $function
-     * @param Node $node
+     * @param Node   $node
      * @param string $level
      */
     private function addIssueForBlacklistedFunction($function, Node $node, $level)
@@ -123,7 +122,7 @@ class Visitor extends NodeVisitorAbstract
 
     /**
      * @param string $message
-     * @param Node $node
+     * @param Node   $node
      * @param string $level
      */
     private function addIssue($message, Node $node = null, $level = Issue::LEVEL_ERROR)
