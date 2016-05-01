@@ -27,19 +27,19 @@ class FunctionBlacklistGadgetTest extends GadgetTestCase
         $gadget = new FunctionBlacklistGadget();
 
         $this->assertConfig($gadget, [
-            'files'     => ['./'],
+            'files' => ['./'],
             'blacklist' => [
-                'die'      => 'error',
+                'die' => 'error',
                 'var_dump' => 'error',
-                'echo'     => 'warning',
-                'dump'     => 'error'
+                'echo' => 'warning',
+                'dump' => 'error'
             ]
         ], []);
     }
 
     public function testDefault()
     {
-        $path   = __DIR__ . '/_data/function_blacklist';
+        $path = __DIR__ . '/_data/function_blacklist';
 
         $gadget = new FunctionBlacklistGadget();
         $config = $this->resolve($gadget, []);
@@ -64,7 +64,7 @@ class FunctionBlacklistGadgetTest extends GadgetTestCase
 
     public function testDie()
     {
-        $path   = __DIR__ . '/_data/function_blacklist';
+        $path = __DIR__ . '/_data/function_blacklist';
 
         $gadget = new FunctionBlacklistGadget();
         $config = $this->resolve($gadget, ['blacklist' => ['die' => 'critical']]);
@@ -84,8 +84,8 @@ class FunctionBlacklistGadgetTest extends GadgetTestCase
 
     public function testExit()
     {
-        $path   = __DIR__ . '/_data/function_blacklist';
-        
+        $path = __DIR__ . '/_data/function_blacklist';
+
         $gadget = new FunctionBlacklistGadget();
         $config = $this->resolve($gadget, ['blacklist' => ['exit' => 'critical']]);
 
@@ -103,7 +103,7 @@ class FunctionBlacklistGadgetTest extends GadgetTestCase
 
     public function testNormalFunction()
     {
-        $path   = __DIR__ . '/_data/function_blacklist';
+        $path = __DIR__ . '/_data/function_blacklist';
 
         $gadget = new FunctionBlacklistGadget();
         $config = $this->resolve($gadget, ['blacklist' => ['extra_var_dump' => 'warning']]);
