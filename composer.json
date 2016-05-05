@@ -28,7 +28,7 @@
         "squizlabs/php_codesniffer": "~2.0",
         "sensiolabs/security-checker": "~2.0 || ~3.0",
         "nikic/php-parser": "^2.0",
-        "simpspector/twig-lint": "dev-symfony-3.0",
+        "simpspector/twig-lint": "^1.1.2",
         "davidbadura/markdown-builder": "~1.0.3",
         "jms/serializer": "~1.0",
         "webmozart/path-util": "^2.0",
