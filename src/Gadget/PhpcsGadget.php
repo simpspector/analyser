@@ -27,18 +27,6 @@ class PhpcsGadget implements GadgetInterface
     }
 
     /**
-     * @param ArrayNodeDefinition $node
-     */
-    public function configure(ArrayNodeDefinition $node)
-    {
-        $node->children()
-            ->node('files', 'paths')->defaultValue(['./'])->end()
-            ->node('standards', 'array')->prototype('scalar')->end()->defaultValue(['PSR1', 'PSR2'])->end()
-            ->node('extensions', 'array')->prototype('scalar')->end()->defaultValue(['php'])->end()
-        ->end();
-    }
-
-    /**
      * @param string $path
      * @param array $options
      * @param AbstractLogger $logger

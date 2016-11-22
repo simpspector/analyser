@@ -34,7 +34,6 @@ class Application extends BaseApplication
         parent::__construct('SimpSpector', 'dev');
 
         $this->add(new AnalyseCommand($analyser, $formatter));
-        $this->add(new ReferenceCommand($repository));
         $this->add(new DiffCommand($importer, new Calculator(), $analyser->getExecutor(), $analyser->getLoader()));
     }
 
