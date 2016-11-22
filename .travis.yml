@@ -18,9 +18,9 @@ env:
 
 before_script:
     - travis_retry composer self-update
-    - travis_retry composer self-update
     - travis_retry composer update $PREFER_LOWEST
     - curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+    - chmod +x phpcs.phar
     - sed -i -e 's/\"phpcs\"/\"\.\/phpcs\.phar\"/g' config/parameters.dist.yml
 
 script:
