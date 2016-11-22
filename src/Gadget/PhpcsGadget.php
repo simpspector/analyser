@@ -2,11 +2,12 @@
 
 namespace SimpSpector\Analyser\Gadget;
 
+use SimpSpector\Analyser\Exception\MissingConfigFileException;
 use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Logger\AbstractLogger;
 use SimpSpector\Analyser\Process\ProcessBuilder;
 use SimpSpector\Analyser\Result;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Webmozart\PathUtil\Path;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
@@ -34,19 +35,13 @@ class PhpcsGadget implements GadgetInterface
      */
     public function run($path, array $options, AbstractLogger $logger)
     {
+        if (!file_exists(Path::join($path, 'phpcs.xml')) && !file_exists(Path::join($path, 'phpcs.xml.dist'))) {
+            throw new MissingConfigFileException();
+        }
+
         $processBuilder = new ProcessBuilder([$this->bin, '--report=csv']);
-
-        foreach ($options['standards'] as $standard) {
-            $processBuilder->add('--standard=' . $standard);
-        }
-
-        $processBuilder->add('--extensions=' . implode(',', $options['extensions']));
-
-        foreach ($options['files'] as $file) {
-            $processBuilder->add($file);
-        }
-
         $processBuilder->setWorkingDirectory($path);
+
         $output = $processBuilder->run($logger);
 
         $rawIssues = $this->convertFromCsvToArray($output);
@@ -110,9 +105,9 @@ class PhpcsGadget implements GadgetInterface
 
         $issue->setExtraInformation(
             [
-                'source'   => $data['source'],
+                'source' => $data['source'],
                 'severity' => $data['severity'],
-                'column'   => $data['column']
+                'column' => $data['column']
             ]
         );
 

@@ -19,7 +19,7 @@ env:
 before_script:
     - travis_retry composer self-update
     - travis_retry composer update $PREFER_LOWEST
-    - curl -o phpcs -L https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+    - curl -o /bin/phpcs -L https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
 
 script:
     - bin/phpunit

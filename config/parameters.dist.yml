@@ -1,0 +1,4 @@
+parameters:
+  gadget.phpmd.bin: "phpmd"
+  gadget.phpcs.bin: "phpcs"
+  gadget.pdepend.bin: "pdepend"

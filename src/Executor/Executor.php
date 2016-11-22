@@ -89,9 +89,9 @@ class Executor implements ExecutorInterface
     private function executeGadgets($path, array $config, AbstractLogger $logger)
     {
         $result = new Result();
-        foreach ($config as $type => $options) {
+        foreach ($config['gadgets'] as $type) {
             $gadget       = $this->repository->get($type);
-            $gadgetResult = $this->executeGadget($gadget, $path, $options, $logger);
+            $gadgetResult = $this->executeGadget($gadget, $path, $config, $logger);
 
             $result->merge($gadgetResult);
         }

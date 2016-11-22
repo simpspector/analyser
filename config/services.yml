@@ -1,11 +1,3 @@
-parameters:
-    simpspector.analyser.bin: ""
-    simpspector.analyser.gadget.phpmd.bin: "%simpspector.analyser.bin%phpmd"
-    simpspector.analyser.gadget.phpcs.bin: "%simpspector.analyser.bin%phpcs"
-    simpspector.analyser.gadget.security_checker.bin: "%simpspector.analyser.bin%security-checker"
-    simpspector.analyser.gadget.pdepend.bin: "%simpspector.analyser.bin%pdepend"
-    simpspector.analyser.loader.default_config: "%simpspector.analyser.config%/default_simpspector.yml"
-
 services:
      simpspector.analyser:
          class: "SimpSpector\\Analyser\\Analyser"
@@ -31,21 +23,21 @@ services:
      simpspecotr.analyser.gadget.phpcs:
         class: "SimpSpector\\Analyser\\Gadget\\PhpcsGadget"
         arguments:
-            - "%simpspector.analyser.gadget.phpcs.bin%"
+            - "%gadget.phpcs.bin%"
         tags:
             - { name: "simpspector.analyser.gadget" }
 
      simpspecotr.analyser.gadget.phpmd:
         class: "SimpSpector\\Analyser\\Gadget\\PhpmdGadget"
         arguments:
-            - "%simpspector.analyser.gadget.phpmd.bin%"
+            - "%gadget.phpmd.bin%"
         tags:
             - { name: "simpspector.analyser.gadget" }
 
      simpspecotr.analyser.gadget.pdepend:
         class: "SimpSpector\\Analyser\\Gadget\\PdependGadget"
         arguments:
-            - "%simpspector.analyser.gadget.pdepend.bin%"
+            - "%gadget.pdepend.bin%"
         tags:
             - { name: "simpspector.analyser.gadget" }
 
@@ -80,13 +72,7 @@ services:
                 name: "simpspector.analyser.subscriber"
 
      # Loader
-     simpspector.analyser.loader: "@simpspector.analyser.loader.config"
-
-     simpspector.analyser.loader.config:
-        class: "SimpSpector\\Analyser\\Loader\\ConfigLoader"
-        arguments:
-            - "@simpspector.analyser.loader.yaml"
-            - "@simpspector.analyser.repository"
+     simpspector.analyser.loader: "@simpspector.analyser.loader.yaml"
 
      simpspector.analyser.loader.yaml:
         class: "SimpSpector\\Analyser\\Loader\\YamlLoader"

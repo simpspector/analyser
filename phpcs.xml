@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<ruleset name="Simpspector">
+    <description>The PSR-2 coding standard.</description>
+    <rule ref="PSR2"/>
+
+    <file>src</file>
+    <file>bin/simpspector</file>
+</ruleset>

@@ -5,4 +5,4 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
 
-\SimpSpector\Analyser\Console\Application::create(__DIR__)->run();
+\SimpSpector\Analyser\Console\Application::create()->run();

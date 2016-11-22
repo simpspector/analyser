@@ -41,10 +41,8 @@ class Application extends BaseApplication
      * @param string|null $bin
      * @return self
      */
-    public static function create($bin = null)
+    public static function create($bin = '')
     {
-        $bin = $bin ? rtrim($bin, '/') . '/' : '';
-
         $container = new ContainerBuilder();
         $container->setParameter('simpspector.analyser.bin', $bin);
         $container->setParameter('simpspector.analyser.config', realpath(__DIR__ . '/../../config'));

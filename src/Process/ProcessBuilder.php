@@ -31,7 +31,7 @@ class ProcessBuilder extends BaseProcessBuilder
                 $logger->write($buffer);
             }
         );
-
+        
         return $process->getOutput();
     }
 }
