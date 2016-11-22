@@ -18,8 +18,10 @@ env:
 
 before_script:
     - travis_retry composer self-update
+    - travis_retry composer self-update
     - travis_retry composer update $PREFER_LOWEST
-    - curl -o /bin/phpcs -L https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+    - curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+    - sed -i -e 's/\"phpcs\"/\"\.\/phpcs\.phar\"/g' config/parameters.dist.yml
 
 script:
     - bin/phpunit
