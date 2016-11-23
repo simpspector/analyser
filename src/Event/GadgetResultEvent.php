@@ -18,14 +18,14 @@ class GadgetResultEvent extends GadgetEvent
 
     /**
      * @param string $path
-     * @param array $options
+     * @param array $arguments
      * @param GadgetInterface $gadget
      * @param Result $result
      * @param AbstractLogger $logger
      */
-    public function __construct($path, array $options, GadgetInterface $gadget, Result $result, AbstractLogger $logger)
+    public function __construct($path, array $arguments, GadgetInterface $gadget, Result $result, AbstractLogger $logger)
     {
-        parent::__construct($path, $options, $gadget, $logger);
+        parent::__construct($path, $arguments, $gadget, $logger);
 
         $this->result = $result;
     }

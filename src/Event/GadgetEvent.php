@@ -19,7 +19,7 @@ class GadgetEvent extends Event
     /**
      * @var array
      */
-    protected $options;
+    protected $arguments;
 
     /**
      * @var GadgetInterface
@@ -33,16 +33,16 @@ class GadgetEvent extends Event
 
     /**
      * @param string $path
-     * @param array $options
+     * @param array $arguments
      * @param GadgetInterface $gadget
      * @param AbstractLogger $logger
      */
-    public function __construct($path, array $options, GadgetInterface $gadget, AbstractLogger $logger)
+    public function __construct($path, array $arguments, GadgetInterface $gadget, AbstractLogger $logger)
     {
-        $this->path    = $path;
-        $this->options = $options;
-        $this->gadget  = $gadget;
-        $this->logger  = $logger;
+        $this->path = $path;
+        $this->arguments = $arguments;
+        $this->gadget = $gadget;
+        $this->logger = $logger;
     }
 
     /**
@@ -56,17 +56,17 @@ class GadgetEvent extends Event
     /**
      * @return array
      */
-    public function getOptions()
+    public function getArguments()
     {
-        return $this->options;
+        return $this->arguments;
     }
 
     /**
-     * @param array $options
+     * @param array $arguments
      */
-    public function setOptions(array $options)
+    public function setArguments(array $arguments)
     {
-        $this->options = $options;
+        $this->arguments = $arguments;
     }
 
     /**

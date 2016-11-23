@@ -2,17 +2,14 @@
 
 namespace SimpSpector\Analyser\Gadget;
 
-use SimpSpector\Analyser\Exception\MissingConfigFileException;
 use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Logger\AbstractLogger;
-use SimpSpector\Analyser\Process\ProcessBuilder;
 use SimpSpector\Analyser\Result;
-use Webmozart\PathUtil\Path;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
  */
-class PhpcsGadget implements GadgetInterface
+class PhpcsGadget extends AbstractGadget
 {
     /**
      * @var string
@@ -29,20 +26,13 @@ class PhpcsGadget implements GadgetInterface
 
     /**
      * @param string $path
-     * @param array $options
+     * @param array $arguments
      * @param AbstractLogger $logger
      * @return Result
      */
-    public function run($path, array $options, AbstractLogger $logger)
+    public function run($path, array $arguments, AbstractLogger $logger)
     {
-        if (!file_exists(Path::join($path, 'phpcs.xml')) && !file_exists(Path::join($path, 'phpcs.xml.dist'))) {
-            throw new MissingConfigFileException();
-        }
-
-        $processBuilder = new ProcessBuilder([$this->bin, '--report=csv']);
-        $processBuilder->setWorkingDirectory($path);
-
-        $output = $processBuilder->run($logger);
+        $output = $this->execute($path, array_merge([$this->bin, '--report=csv'], $arguments), $logger, [0, 1]);
 
         $rawIssues = $this->convertFromCsvToArray($output);
 

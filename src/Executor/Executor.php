@@ -37,7 +37,7 @@ class Executor implements ExecutorInterface
      */
     public function __construct(RepositoryInterface $repository, EventDispatcherInterface $eventDispatcher = null)
     {
-        $this->repository      = $repository;
+        $this->repository = $repository;
         $this->eventDispatcher = $eventDispatcher ?: new EventDispatcher();
     }
 
@@ -49,7 +49,7 @@ class Executor implements ExecutorInterface
      */
     public function run($path, array $config, AbstractLogger $logger = null)
     {
-        $path   = Path::canonicalize($path);
+        $path = Path::canonicalize($path);
         $logger = $logger ?: new NullLogger();
 
         $event = new ExecutorEvent($path, $config, $logger);
@@ -89,9 +89,9 @@ class Executor implements ExecutorInterface
     private function executeGadgets($path, array $config, AbstractLogger $logger)
     {
         $result = new Result();
-        foreach ($config['gadgets'] as $type) {
-            $gadget       = $this->repository->get($type);
-            $gadgetResult = $this->executeGadget($gadget, $path, $config, $logger);
+        foreach ($config['gadgets'] as $type => $arguments) {
+            $gadget = $this->repository->get($type);
+            $gadgetResult = $this->executeGadget($gadget, $path, (array)$arguments, $logger);
 
             $result->merge($gadgetResult);
         }
@@ -102,19 +102,19 @@ class Executor implements ExecutorInterface
     /**
      * @param GadgetInterface $gadget
      * @param string $path
-     * @param array $options
+     * @param array $arguments
      * @param AbstractLogger $logger
      * @return Result
      */
-    private function executeGadget(GadgetInterface $gadget, $path, array $options, AbstractLogger $logger)
+    private function executeGadget(GadgetInterface $gadget, $path, array $arguments, AbstractLogger $logger)
     {
-        $event = new GadgetEvent($path, $options, $gadget, $logger);
+        $event = new GadgetEvent($path, $arguments, $gadget, $logger);
         $this->eventDispatcher->dispatch(Events::PRE_GADGET, $event);
-        $options = $event->getOptions();
+        $arguments = $event->getArguments();
 
-        $result = $gadget->run($path, $options, $logger);
+        $result = $gadget->run($path, $arguments, $logger);
 
-        $event = new GadgetResultEvent($path, $options, $gadget, $result, $logger);
+        $event = new GadgetResultEvent($path, $arguments, $gadget, $result, $logger);
         $this->eventDispatcher->dispatch(Events::POST_GADGET, $event);
 
         return $result;
