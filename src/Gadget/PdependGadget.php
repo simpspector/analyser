@@ -2,19 +2,16 @@
 
 namespace SimpSpector\Analyser\Gadget;
 
-use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Logger\AbstractLogger;
 use SimpSpector\Analyser\Metric;
-use SimpSpector\Analyser\Process\ProcessBuilder;
 use SimpSpector\Analyser\Result;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
  */
-class PdependGadget implements GadgetInterface
+class PdependGadget extends AbstractGadget
 {
     /**
      * @var string
@@ -30,31 +27,20 @@ class PdependGadget implements GadgetInterface
     }
 
     /**
-     * @param ArrayNodeDefinition $node
-     */
-    public function configure(ArrayNodeDefinition $node)
-    {
-        $node->children()
-            ->node('files', 'paths')->defaultValue(['./'])->end()
-            ->end();
-    }
-
-    /**
      * @param string $path
-     * @param array $options
+     * @param array $arguments
      * @param AbstractLogger $logger
      * @return Result
      */
-    public function run($path, array $options, AbstractLogger $logger)
+    public function run($path, array $arguments, AbstractLogger $logger)
     {
         $file = tempnam('/tmp', 'pdepend_');
 
-        $processBuilder = new ProcessBuilder([$this->bin]);
-        $processBuilder->add('--summary-xml=' . $file);
-        $processBuilder->add(implode(',', $options['files']));
-        $processBuilder->setWorkingDirectory($path);
-        $processBuilder->run($logger);
+        if (!$arguments) {
+            $arguments[] = './src';
+        }
 
+        $this->execute($path, array_merge([$this->bin, '--summary-xml=' . $file], $arguments), $logger);
         $data = $this->convertFromXmlToArray(file_get_contents($file));
 
         (new Filesystem())->remove($file);

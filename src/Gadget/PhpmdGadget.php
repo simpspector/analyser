@@ -28,17 +28,6 @@ class PhpmdGadget implements GadgetInterface
     }
 
     /**
-     * @param ArrayNodeDefinition $node
-     */
-    public function configure(ArrayNodeDefinition $node)
-    {
-        $node->children()
-            ->node('files', 'paths')->defaultValue(['./'])->end()
-            ->node('rulesets', 'array')->prototype('scalar')->end()->defaultValue(['codesize', 'unusedcode'])->end()
-        ->end();
-    }
-
-    /**
      * @param string $path
      * @param array $options
      * @param AbstractLogger $logger

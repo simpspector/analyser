@@ -28,17 +28,6 @@ class TwigLintGadget implements GadgetInterface
     }
 
     /**
-     * @param ArrayNodeDefinition $node
-     */
-    public function configure(ArrayNodeDefinition $node)
-    {
-        $node->children()
-            ->node('files', 'paths')->defaultValue(['./'])->end()
-            ->node('error_level', 'level')->defaultValue(Issue::LEVEL_ERROR)->end()
-        ->end();
-    }
-
-    /**
      * @param string $path
      * @param array $options
      * @param AbstractLogger $logger
