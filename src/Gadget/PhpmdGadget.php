@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 /**
  * @author David Badura <d.a.badura@gmail.com>
  */
-class PhpmdGadget implements GadgetInterface
+class PhpmdGadget extends AbstractGadget
 {
     /**
      * @var string
@@ -29,19 +29,23 @@ class PhpmdGadget implements GadgetInterface
 
     /**
      * @param string $path
-     * @param array $options
+     * @param array $arguments
      * @param AbstractLogger $logger
      * @return Result
      */
-    public function run($path, array $options, AbstractLogger $logger)
+    public function run($path, array $arguments, AbstractLogger $logger)
     {
-        $processBuilder = new ProcessBuilder([$this->bin]);
-        $processBuilder->add(implode(',', $options['files']));
-        $processBuilder->add('xml');
-        $processBuilder->add(implode(',', $options['rulesets']));
-        $processBuilder->setWorkingDirectory($path);
-        $output = $processBuilder->run($logger);
+        if(!isset($arguments[0])) {
+            $arguments[0] = './src';
+        }
 
+        $arguments[1] = 'xml';
+
+        if(!isset($arguments[2])) {
+            $arguments[2] = 'codesize,unusedcode,naming';
+        }
+
+        $output = $this->execute($path, array_merge([$this->bin], $arguments), $logger, [0, 2]);
         $data = $this->convertFromXmlToArray($output);
 
         $result = new Result();

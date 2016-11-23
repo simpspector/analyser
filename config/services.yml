@@ -41,6 +41,13 @@ services:
         tags:
             - { name: "simpspector.analyser.gadget" }
 
+     simpspecotr.analyser.gadget.twig_lint:
+        class: "SimpSpector\\Analyser\\Gadget\\TwigLintGadget"
+        arguments:
+            - "%gadget.twig_lint.bin%"
+        tags:
+            - { name: "simpspector.analyser.gadget" }
+
      # Events
      simpspector.analyser.event.listener.simple_highlight:
         class: "SimpSpector\\Analyser\\Event\\Listener\\SimpleHighlightListener"
