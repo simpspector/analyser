@@ -37,7 +37,12 @@ abstract class AbstractGadget implements GadgetInterface
         );
 
         if (!in_array($process->getExitCode(), $allowedStatusCodes, true)) {
-            throw new GadgetProcessException($process->getOutput());
+            throw new GadgetProcessException(
+                $process->getCommandLine(),
+                $process->getExitCode(),
+                $process->getOutput(),
+                $process->getErrorOutput()
+            );
         }
 
         return $process->getOutput();

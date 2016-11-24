@@ -48,6 +48,13 @@ services:
         tags:
             - { name: "simpspector.analyser.gadget" }
 
+     simpspecotr.analyser.gadget.security_checker:
+        class: "SimpSpector\\Analyser\\Gadget\\SecurityCheckerGadget"
+        arguments:
+            - "%gadget.security_checker.bin%"
+        tags:
+            - { name: "simpspector.analyser.gadget" }
+
      # Events
      simpspector.analyser.event.listener.simple_highlight:
         class: "SimpSpector\\Analyser\\Event\\Listener\\SimpleHighlightListener"
