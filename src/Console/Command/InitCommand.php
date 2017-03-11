@@ -76,7 +76,7 @@ class InitCommand extends Command
         }
 
         if (! empty($configFileData)) {
-            $yamlData = $yamlDumper->dump($configFileData, $inline = 3);
+            $yamlData = $yamlDumper->dump(["gadgets" => $configFileData], $inline = 4);
             $filesystem->dumpFile($configFile, $yamlData);
             $output->writeln("<info>success</info> config file written");
         }
