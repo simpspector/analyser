@@ -34,7 +34,6 @@ class Application extends BaseApplication
         parent::__construct('SimpSpector', 'dev');
 
         $this->add(new AnalyseCommand($analyser, $formatter));
-        $this->add(new ReferenceCommand($repository));
         $this->add(new DiffCommand($importer, new Calculator(), $analyser->getExecutor(), $analyser->getLoader()));
     }
 
@@ -42,10 +41,8 @@ class Application extends BaseApplication
      * @param string|null $bin
      * @return self
      */
-    public static function create($bin = null)
+    public static function create($bin = '')
     {
-        $bin = $bin ? rtrim($bin, '/') . '/' : '';
-
         $container = new ContainerBuilder();
         $container->setParameter('simpspector.analyser.bin', $bin);
         $container->setParameter('simpspector.analyser.config', realpath(__DIR__ . '/../../config'));

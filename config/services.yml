@@ -1,11 +1,3 @@
-parameters:
-    simpspector.analyser.bin: ""
-    simpspector.analyser.gadget.phpmd.bin: "%simpspector.analyser.bin%phpmd"
-    simpspector.analyser.gadget.phpcs.bin: "%simpspector.analyser.bin%phpcs"
-    simpspector.analyser.gadget.security_checker.bin: "%simpspector.analyser.bin%security-checker"
-    simpspector.analyser.gadget.pdepend.bin: "%simpspector.analyser.bin%pdepend"
-    simpspector.analyser.loader.default_config: "%simpspector.analyser.config%/default_simpspector.yml"
-
 services:
      simpspector.analyser:
          class: "SimpSpector\\Analyser\\Analyser"
@@ -28,56 +20,38 @@ services:
             - "@service_container"
 
      # Gadgets
-     simpspecotr.analyser.gadget.comment_blacklist:
-        class: "SimpSpector\\Analyser\\Gadget\\CommentBlacklistGadget"
-        tags:
-            - { name: "simpspector.analyser.gadget" }
-
-     simpspecotr.analyser.gadget.function_blacklist:
-        class: "SimpSpector\\Analyser\\Gadget\\FunctionBlacklistGadget"
-        tags:
-            - { name: "simpspector.analyser.gadget" }
-
      simpspecotr.analyser.gadget.phpcs:
         class: "SimpSpector\\Analyser\\Gadget\\PhpcsGadget"
         arguments:
-            - "%simpspector.analyser.gadget.phpcs.bin%"
+            - "%gadget.phpcs.bin%"
         tags:
             - { name: "simpspector.analyser.gadget" }
 
      simpspecotr.analyser.gadget.phpmd:
         class: "SimpSpector\\Analyser\\Gadget\\PhpmdGadget"
         arguments:
-            - "%simpspector.analyser.gadget.phpmd.bin%"
-        tags:
-            - { name: "simpspector.analyser.gadget" }
-
-     simpspecotr.analyser.gadget.security_checker:
-        class: "SimpSpector\\Analyser\\Gadget\\SecurityCheckerGadget"
-        arguments:
-            - "%simpspector.analyser.gadget.security_checker.bin%"
-        tags:
-            - { name: "simpspector.analyser.gadget" }
-
-     simpspecotr.analyser.gadget.twig_lint:
-        class: "SimpSpector\\Analyser\\Gadget\\TwigLintGadget"
+            - "%gadget.phpmd.bin%"
         tags:
             - { name: "simpspector.analyser.gadget" }
 
      simpspecotr.analyser.gadget.pdepend:
         class: "SimpSpector\\Analyser\\Gadget\\PdependGadget"
         arguments:
-            - "%simpspector.analyser.gadget.pdepend.bin%"
+            - "%gadget.pdepend.bin%"
         tags:
             - { name: "simpspector.analyser.gadget" }
 
-     simpsector.analyser.gadget.doc_block.differ:
-        class: "SimpSpector\\Analyser\\Gadget\\DocBlockGadget\\Differ"
-
-     simpspecotr.analyser.gadget.doc_block:
-        class: "SimpSpector\\Analyser\\Gadget\\DocBlockGadget"
+     simpspecotr.analyser.gadget.twig_lint:
+        class: "SimpSpector\\Analyser\\Gadget\\TwigLintGadget"
         arguments:
-            - "@simpsector.analyser.gadget.doc_block.differ"
+            - "%gadget.twig_lint.bin%"
+        tags:
+            - { name: "simpspector.analyser.gadget" }
+
+     simpspecotr.analyser.gadget.security_checker:
+        class: "SimpSpector\\Analyser\\Gadget\\SecurityCheckerGadget"
+        arguments:
+            - "%gadget.security_checker.bin%"
         tags:
             - { name: "simpspector.analyser.gadget" }
 
@@ -112,24 +86,7 @@ services:
                 name: "simpspector.analyser.subscriber"
 
      # Loader
-     simpspector.analyser.loader: "@simpspector.analyser.loader.config"
-
-     simpspector.analyser.loader.config:
-        class: "SimpSpector\\Analyser\\Loader\\ConfigLoader"
-        arguments:
-            - "@simpspector.analyser.loader.default"
-            - "@simpspector.analyser.repository"
-
-     simpspector.analyser.loader.default:
-        class: "SimpSpector\\Analyser\\Loader\\DefaultConfigLoader"
-        arguments:
-            - "@simpspector.analyser.loader.legacy_filename"
-            - "%simpspector.analyser.loader.default_config%"
-
-     simpspector.analyser.loader.legacy_filename:
-        class: "SimpSpector\\Analyser\\Loader\\LegacyFilenameLoader"
-        arguments:
-            - "@simpspector.analyser.loader.yaml"
+     simpspector.analyser.loader: "@simpspector.analyser.loader.yaml"
 
      simpspector.analyser.loader.yaml:
         class: "SimpSpector\\Analyser\\Loader\\YamlLoader"

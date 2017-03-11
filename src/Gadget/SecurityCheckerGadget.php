@@ -5,14 +5,13 @@ namespace SimpSpector\Analyser\Gadget;
 use DavidBadura\MarkdownBuilder\MarkdownBuilder;
 use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Logger\AbstractLogger;
-use SimpSpector\Analyser\Process\ProcessBuilder;
 use SimpSpector\Analyser\Result;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Webmozart\PathUtil\Path;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
  */
-class SecurityCheckerGadget implements GadgetInterface
+class SecurityCheckerGadget extends AbstractGadget
 {
     /**
      * @var string
@@ -28,29 +27,20 @@ class SecurityCheckerGadget implements GadgetInterface
     }
 
     /**
-     * @param ArrayNodeDefinition $node
-     */
-    public function configure(ArrayNodeDefinition $node)
-    {
-        $node->children()
-            ->node('directory', 'path')->defaultValue('./')->end()
-            ->node('level', 'level')->defaultValue(Issue::LEVEL_CRITICAL)->end()
-        ->end();
-    }
-
-    /**
      * @param string $path
-     * @param array $options
+     * @param array $arguments
      * @param AbstractLogger $logger
      * @return Result
      */
-    public function run($path, array $options, AbstractLogger $logger)
+    public function run($path, array $arguments, AbstractLogger $logger)
     {
-        $processBuilder = new ProcessBuilder([$this->bin, 'security:check', '--format=json', $options['directory']]);
-        $processBuilder->setWorkingDirectory($path);
-        $output = $processBuilder->run($logger);
+        $output = $this->execute(
+            $path,
+            [$this->bin, 'security:check', '--format=json'],
+            $logger
+        );
 
-        $data   = json_decode($output, true);
+        $data = json_decode($output, true);
         $result = new Result();
 
         if (count($data) == 0) {
@@ -59,10 +49,10 @@ class SecurityCheckerGadget implements GadgetInterface
 
         foreach ($data as $lib => $info) {
             $result->merge($this->createIssues(
-                trim(rtrim($options['directory'], '/') . '/composer.json', './'),
+                Path::join($path, '/composer.json'),
                 $lib,
                 $info,
-                $options['level']
+                Issue::LEVEL_WARNING
             ));
         }
 
@@ -122,10 +112,10 @@ class SecurityCheckerGadget implements GadgetInterface
 
         $issue->setExtraInformation(
             [
-                'lib'     => $lib,
+                'lib' => $lib,
                 'version' => $version,
-                'link'    => $advisory['link'],
-                'cve'     => $advisory['cve']
+                'link' => $advisory['link'],
+                'cve' => $advisory['cve']
             ]
         );
 

@@ -13,7 +13,6 @@ class AnalyserFactory
     public function create()
     {
         $container = new ContainerBuilder();
-        $container->setParameter('simpspector.analyser.bin', __DIR__ . '/../bin');
         $container->setParameter('simpspector.analyser.config', __DIR__ . '/../config');
 
         (new ContainerConfigurator())->prepare($container);

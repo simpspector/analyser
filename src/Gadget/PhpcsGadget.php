@@ -4,14 +4,12 @@ namespace SimpSpector\Analyser\Gadget;
 
 use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Logger\AbstractLogger;
-use SimpSpector\Analyser\Process\ProcessBuilder;
 use SimpSpector\Analyser\Result;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
  */
-class PhpcsGadget implements GadgetInterface
+class PhpcsGadget extends AbstractGadget
 {
     /**
      * @var string
@@ -27,39 +25,14 @@ class PhpcsGadget implements GadgetInterface
     }
 
     /**
-     * @param ArrayNodeDefinition $node
-     */
-    public function configure(ArrayNodeDefinition $node)
-    {
-        $node->children()
-            ->node('files', 'paths')->defaultValue(['./'])->end()
-            ->node('standards', 'array')->prototype('scalar')->end()->defaultValue(['PSR1', 'PSR2'])->end()
-            ->node('extensions', 'array')->prototype('scalar')->end()->defaultValue(['php'])->end()
-        ->end();
-    }
-
-    /**
      * @param string $path
-     * @param array $options
+     * @param array $arguments
      * @param AbstractLogger $logger
      * @return Result
      */
-    public function run($path, array $options, AbstractLogger $logger)
+    public function run($path, array $arguments, AbstractLogger $logger)
     {
-        $processBuilder = new ProcessBuilder([$this->bin, '--report=csv']);
-
-        foreach ($options['standards'] as $standard) {
-            $processBuilder->add('--standard=' . $standard);
-        }
-
-        $processBuilder->add('--extensions=' . implode(',', $options['extensions']));
-
-        foreach ($options['files'] as $file) {
-            $processBuilder->add($file);
-        }
-
-        $processBuilder->setWorkingDirectory($path);
-        $output = $processBuilder->run($logger);
+        $output = $this->execute($path, array_merge([$this->bin, '--report=csv'], $arguments), $logger, [0, 1]);
 
         $rawIssues = $this->convertFromCsvToArray($output);
 
@@ -122,9 +95,9 @@ class PhpcsGadget implements GadgetInterface
 
         $issue->setExtraInformation(
             [
-                'source'   => $data['source'],
+                'source' => $data['source'],
                 'severity' => $data['severity'],
-                'column'   => $data['column']
+                'column' => $data['column']
             ]
         );
 

@@ -2,66 +2,53 @@
 
 namespace SimpSpector\Analyser\Gadget;
 
-use Asm89\Twig\Lint\StubbedEnvironment;
 use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Logger\AbstractLogger;
 use SimpSpector\Analyser\Result;
-use SimpSpector\Analyser\Util\FilesystemHelper;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
 /**
  * @author Tobias Olry <tobias.olry@gmail.com>
+ * @author David Badura <d.a.badura@gmail.com>
  */
-class TwigLintGadget implements GadgetInterface
+class TwigLintGadget extends AbstractGadget
 {
     /**
-     * @var StubbedEnvironment
+     * @var string
      */
-    private $twig;
+    private $bin;
 
     /**
-     *
+     * @param string $bin
      */
-    public function __construct()
+    public function __construct($bin = 'twig-lint')
     {
-        $this->twig = new StubbedEnvironment(new \Twig_Loader_String());
-    }
-
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    public function configure(ArrayNodeDefinition $node)
-    {
-        $node->children()
-            ->node('files', 'paths')->defaultValue(['./'])->end()
-            ->node('error_level', 'level')->defaultValue(Issue::LEVEL_ERROR)->end()
-        ->end();
+        $this->bin = $bin;
     }
 
     /**
      * @param string $path
-     * @param array $options
+     * @param array $arguments
      * @param AbstractLogger $logger
      * @return Result
      */
-    public function run($path, array $options, AbstractLogger $logger)
+    public function run($path, array $arguments, AbstractLogger $logger)
     {
+        if (!$arguments) {
+            $arguments = ['lint', './src'];
+        }
+
+        $output = $this->execute($path, array_merge([$this->bin, '--format=csv'], $arguments), $logger, [0, 1]);
+        $array = $this->convertToArray($output);
+
         $result = new Result();
-        $files  = FilesystemHelper::findFiles($path, $options['files'], '*.twig');
 
-        foreach ($files as $file) {
-            try {
-                $this->twig->parse($this->twig->tokenize(file_get_contents($file), $file));
-            } catch (\Twig_Error $e) {
-                $message = get_class($e) . ': ' . $e->getRawMessage();
+        foreach ($array as $error) {
+            $issue = new Issue($this, $error['message']);
+            $issue->setLevel(Issue::LEVEL_CRITICAL);
+            $issue->setFile($error['file']);
+            $issue->setLine($error['line']);
 
-                $issue = new Issue($this, $message);
-                $issue->setLevel($options['error_level']);
-                $issue->setFile($file);
-                $issue->setLine($e->getTemplateLine());
-
-                $result->addIssue($issue);
-            }
+            $result->addIssue($issue);
         }
 
         return $result;
@@ -72,6 +59,28 @@ class TwigLintGadget implements GadgetInterface
      */
     public function getName()
     {
-        return 'twig_lint';
+        return 'twig-lint';
+    }
+
+    /**
+     * @param string $csv
+     * @return array
+     */
+    private function convertToArray($csv)
+    {
+        $lines = explode(PHP_EOL, $csv);
+
+        $header = ['file', 'line', 'message'];
+
+        $result = [];
+        foreach ($lines as $line) {
+            if (!$line) {
+                continue;
+            }
+
+            $result[] = array_combine($header, str_getcsv($line));
+        }
+
+        return $result;
     }
 }

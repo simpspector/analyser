@@ -12,17 +12,12 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 interface GadgetInterface
 {
     /**
-     * @param ArrayNodeDefinition $node
-     */
-    public function configure(ArrayNodeDefinition $node);
-
-    /**
      * @param string $path
-     * @param array $options
+     * @param array $arguments
      * @param AbstractLogger $logger
      * @return Result
      */
-    public function run($path, array $options, AbstractLogger $logger);
+    public function run($path, array $arguments, AbstractLogger $logger);
 
     /**
      * @return string
