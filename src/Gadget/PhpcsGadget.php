@@ -32,6 +32,10 @@ class PhpcsGadget extends AbstractGadget
      */
     public function run($path, array $arguments, AbstractLogger $logger)
     {
+        if (empty($arguments)) {
+            $arguments[] = 'src/';
+        }
+
         $output = $this->execute($path, array_merge([$this->bin, '--report=csv'], $arguments), $logger, [0, 1]);
 
         $rawIssues = $this->convertFromCsvToArray($output);
