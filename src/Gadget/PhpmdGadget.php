@@ -35,13 +35,13 @@ class PhpmdGadget extends AbstractGadget
      */
     public function run($path, array $arguments, AbstractLogger $logger)
     {
-        if(!isset($arguments[0])) {
+        if (!isset($arguments[0])) {
             $arguments[0] = './src';
         }
 
         $arguments[1] = 'xml';
 
-        if(!isset($arguments[2])) {
+        if (!isset($arguments[2])) {
             $arguments[2] = 'codesize,unusedcode,naming';
         }
 
@@ -67,11 +67,27 @@ class PhpmdGadget extends AbstractGadget
     }
 
     /**
-     * @return string
+     * @see GadgetInterface::getName()
      */
     public function getName()
     {
         return 'phpmd';
+    }
+
+    /**
+     * @see GadgetInterface::getDescription()
+     */
+    public function getDescription()
+    {
+        return 'PHP Mess Detector';
+    }
+
+    /**
+     * @see GadgetInterface::getDefaultConfigurationFile()
+     */
+    public function getDefaultConfigurationFile()
+    {
+        return null;
     }
 
     /**

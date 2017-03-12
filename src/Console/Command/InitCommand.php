@@ -68,7 +68,10 @@ class InitCommand extends Command
         $output->writeln("config file target\n\t<info>$configFile</info>");
 
         foreach ($gadgets as $key => $gadget) {
-            $question = new ConfirmationQuestion("[$key] enable? (Y/n) ");
+            $binaryFound = `which $key`;
+            $output->writeln("Gadget <info>{$gadget->getDescription()}</info>");
+            $output->writeln("\t" . $key . ($binaryFound ? '' : " <error>not</error>") . " found");
+            $question = new ConfirmationQuestion("\tenable? (Y/n) ");
 
             if ($questionHelper->ask($input, $output, $question)) {
                 $configFileData[$key] = null;

@@ -60,11 +60,27 @@ class SecurityCheckerGadget extends AbstractGadget
     }
 
     /**
-     * @return string
+     * @see GadgetInterface::getName()
      */
     public function getName()
     {
         return 'security_checker';
+    }
+
+    /**
+     * @see GadgetInterface::getDescription()
+     */
+    public function getDescription()
+    {
+        return 'Security Checker';
+    }
+
+    /**
+     * @see GadgetInterface::getDefaultConfigurationFile()
+     */
+    public function getDefaultConfigurationFile()
+    {
+        return null;
     }
 
     /**

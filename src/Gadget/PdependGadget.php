@@ -79,11 +79,27 @@ class PdependGadget extends AbstractGadget
     }
 
     /**
-     * @return string
+     * @see GadgetInterface::getName()
      */
     public function getName()
     {
         return 'pdepend';
+    }
+
+    /**
+     * @see GadgetInterface::getDescription()
+     */
+    public function getDescription()
+    {
+        return 'PHP Depend';
+    }
+
+    /**
+     * @see GadgetInterface::getDefaultConfigurationFile()
+     */
+    public function getDefaultConfigurationFile()
+    {
+        return null;
     }
 
     /**
