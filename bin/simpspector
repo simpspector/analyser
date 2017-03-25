@@ -1,7 +1,16 @@
 #!/usr/bin/env php
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+$normalRequire = __DIR__ . '/../vendor/autoload.php';
+$globalRequire = __DIR__ . '/../../../vendor/autoload.php';
+
+if (file_exists($normalRequire)) {
+    require_once $normalRequire;
+} elseif (file_exists($globalRequire)) {
+    require_once $globalRequire;
+} else {
+    new \RuntimeException('could not find composer autoloader');
+}
 
 \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
 
