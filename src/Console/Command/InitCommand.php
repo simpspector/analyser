@@ -68,9 +68,15 @@ class InitCommand extends Command
         $output->writeln("config file target\n\t<info>$configFile</info>");
 
         foreach ($gadgets as $key => $gadget) {
-            $binaryFound = `which $key`;
             $output->writeln("Gadget <info>{$gadget->getDescription()}</info>");
-            $output->writeln("\t" . $key . ($binaryFound ? '' : " <error>not</error>") . " found");
+
+            $binaryFound = `which $key`;
+            if ($binaryFound) {
+                $output->writeln("\t<info>✔</info> $key binary found");
+            } else {
+                $output->writeln("\t<fg=red>✗</> $key binary not found");
+            }
+
             $question = new ConfirmationQuestion("\tenable? (Y/n) ");
 
             if ($questionHelper->ask($input, $output, $question)) {
