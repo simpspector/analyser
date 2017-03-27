@@ -54,9 +54,6 @@ class InitCommand extends Command
     {
         $helper = new InitConfigCliHelper($input, $output, $input->getArgument('path'));
 
-        $questionHelper = $this->getHelper('question');
-
-
         $configFile = $helper->lookupConfigFile();
 
         $configFileData = [];
@@ -70,6 +67,18 @@ class InitCommand extends Command
             }
 
             $configFileData[$key] = null;
+
+            $defaultConfigFile = $gadget->getDefaultConfigurationFile();
+            if (! $defaultConfigFile) {
+                continue;
+            }
+
+            $configFilePath = $helper->buildConfigFilePath($defaultConfigFile);
+            if (file_exists($configFilePath)) {
+                $helper->success("config file " . $defaultConfigFile->filename . " already exists");
+
+                continue;
+            }
         }
 
         $helper->writeConfigFile($configFileData, $configFile);
