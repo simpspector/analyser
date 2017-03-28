@@ -18,7 +18,7 @@ class ConfigurationFile
      */
     public $content;
 
-    public function _construct($filename, $content)
+    public function __construct($filename, $content)
     {
         $this->filename = $filename;
         $this->content = $content;

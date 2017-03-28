@@ -75,10 +75,16 @@ class InitCommand extends Command
 
             $configFilePath = $helper->buildConfigFilePath($defaultConfigFile);
             if (file_exists($configFilePath)) {
-                $helper->success("config file " . $defaultConfigFile->filename . " already exists");
+                $helper->success("config file " . $defaultConfigFile->filename . " already exists", 1);
 
                 continue;
             }
+
+            if (! $helper->askConfirmation("use SimpSpector's default configuration file for $key", 1)) {
+                continue;
+            }
+
+            $helper->writeGadgetConfigFile($defaultConfigFile);
         }
 
         $helper->writeConfigFile($configFileData, $configFile);

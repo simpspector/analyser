@@ -2,6 +2,7 @@
 
 namespace SimpSpector\Analyser\Util;
 
+use SimpSpector\Analyser\Struct\ConfigurationFile;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -69,12 +70,24 @@ class InitConfigCliHelper
         $yamlData = $yamlDumper->dump(["gadgets" => $data], $inline = 4);
         $this->filesystem->dumpFile($file, $yamlData);
 
-        $this->output->writeln("<info>success</info> config file written");
+        $this->success("config file written");
+    }
+
+    public function buildConfigFilePath(ConfigurationFile $file)
+    {
+        return $this->projectPath . '/' . $file->filename;
+    }
+
+    public function writeGadgetConfigFile(ConfigurationFile $file)
+    {
+        $this->filesystem->dumpFile($file->filename, $file->content);
+
+        $this->success("gadget config file written", 1);
     }
 
     public function askConfirmation($questionText, $indentLevel = 0)
     {
-        $questionText = str_repeat("\t", $indentLevel) . $questionText;
+        $questionText = str_repeat("\t", $indentLevel) . '<fg=blue>?</> ' . $questionText;
         $helper = new QuestionHelper();
         $question = new ConfirmationQuestion("$questionText (Y/n) ");
 

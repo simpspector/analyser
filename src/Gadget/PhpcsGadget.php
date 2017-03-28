@@ -5,6 +5,7 @@ namespace SimpSpector\Analyser\Gadget;
 use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Logger\AbstractLogger;
 use SimpSpector\Analyser\Result;
+use SimpSpector\Analyser\Struct\ConfigurationFile;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
