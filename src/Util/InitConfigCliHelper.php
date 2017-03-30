@@ -49,13 +49,17 @@ class InitConfigCliHelper
      */
     public function lookupConfigFile()
     {
-        $configFile = $this->projectPath . '/.simpspector.yml';
+        $this->success('assuming project in folder ' . $this->projectPath);
 
-        if ($this->filesystem->exists($configFile)) {
-            throw new \Exception('simpspector already configured');
+        $configFile = $this->projectPath . '/.simpspector.yml';
+        if (! $this->filesystem->exists($configFile)) {
+            return $configFile;
         }
 
-        $this->output->writeln("config file target\n\t<info>$configFile</info>");
+        $this->success('found existing .simpspector.yml');
+        if (! $this->askConfirmation('Do you want to overwrite it?', 0, $defaultAnswer = false)) {
+            throw new \Exception('ending process');
+        }
 
         return $configFile;
     }
@@ -82,7 +86,7 @@ class InitConfigCliHelper
     {
         $this->filesystem->dumpFile($file->filename, $file->content);
 
-        $this->success("gadget config file written", 1);
+        $this->success("gadget config file written", 2);
     }
 
     public function askConfirmation($questionText, $indentLevel = 0, $defaultAnswer = true)
