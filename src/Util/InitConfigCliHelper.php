@@ -70,7 +70,7 @@ class InitConfigCliHelper
         $yamlData = $yamlDumper->dump(["gadgets" => $data], $inline = 4);
         $this->filesystem->dumpFile($file, $yamlData);
 
-        $this->success("config file written");
+        $this->success(".simpspector.yml config file written");
     }
 
     public function buildConfigFilePath(ConfigurationFile $file)
@@ -85,11 +85,11 @@ class InitConfigCliHelper
         $this->success("gadget config file written", 1);
     }
 
-    public function askConfirmation($questionText, $indentLevel = 0)
+    public function askConfirmation($questionText, $indentLevel = 0, $defaultAnswer = true)
     {
         $questionText = str_repeat("\t", $indentLevel) . '<fg=blue>?</> ' . $questionText;
         $helper = new QuestionHelper();
-        $question = new ConfirmationQuestion("$questionText (Y/n) ");
+        $question = new ConfirmationQuestion($questionText . ($defaultAnswer ? " (Y/n) " : " (y/N) "), $defaultAnswer);
 
         return $helper->ask($this->input, $this->output, $question);
     }

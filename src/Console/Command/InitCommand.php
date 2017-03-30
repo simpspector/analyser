@@ -62,11 +62,13 @@ class InitCommand extends Command
 
             $binaryFound = $helper->checkBinary($key);
 
-            if (! $helper->askConfirmation("enable?", 1)) {
+            if (! $helper->askConfirmation("enable?", 1, $defaultAnswer = $binaryFound)) {
+                $helper->error('not enabled', 2);
                 continue;
             }
 
             $configFileData[$key] = null;
+            $helper->success('enabled', 2);
 
             $defaultConfigFile = $gadget->getDefaultConfigurationFile();
             if (! $defaultConfigFile) {
