@@ -75,18 +75,7 @@ class InitCommand extends Command
                 continue;
             }
 
-            $overwrite = false;
-            $configFilePath = $helper->buildConfigFilePath($defaultConfigFile);
-            if (file_exists($configFilePath)) {
-                $helper->success("config file " . $defaultConfigFile->filename . " already exists", 1);
-
-                if (! $helper->askConfirmation('do you want to overwrite it?', 1, $defaultAnswer = false)) {
-                    continue;
-                }
-                $overwrite = true;
-            }
-
-            if (! $overwrite && ! $helper->askConfirmation("use SimpSpector's default configuration file for $key", 1)) {
+            if (! $helper->userWantsToWriteConfigFile($defaultConfigFile)) {
                 continue;
             }
 

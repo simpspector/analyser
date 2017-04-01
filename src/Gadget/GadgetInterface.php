@@ -4,7 +4,7 @@ namespace SimpSpector\Analyser\Gadget;
 
 use SimpSpector\Analyser\Logger\AbstractLogger;
 use SimpSpector\Analyser\Result;
-use SimpSpector\Analyser\Struct\ConfigurationFile;
+use SimpSpector\Analyser\Struct\GadgetConfigurationFile;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
 /**
@@ -40,7 +40,7 @@ interface GadgetInterface
     public function getDescription();
 
     /**
-     * @return ConfigurationFile|null
+     * @return GadgetConfigurationFile|null
      */
     public function getDefaultConfigurationFile();
 }

@@ -6,7 +6,7 @@
 
 namespace SimpSpector\Analyser\Struct;
 
-class ConfigurationFile
+class GadgetConfigurationFile
 {
     /**
      * @var string

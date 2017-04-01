@@ -2,7 +2,7 @@
 
 namespace SimpSpector\Analyser\Util;
 
-use SimpSpector\Analyser\Struct\ConfigurationFile;
+use SimpSpector\Analyser\Struct\GadgetConfigurationFile;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -77,12 +77,7 @@ class InitConfigCliHelper
         $this->success(".simpspector.yml config file written");
     }
 
-    public function buildConfigFilePath(ConfigurationFile $file)
-    {
-        return $this->projectPath . '/' . $file->filename;
-    }
-
-    public function writeGadgetConfigFile(ConfigurationFile $file)
+    public function writeGadgetConfigFile(GadgetConfigurationFile $file)
     {
         $this->filesystem->dumpFile($file->filename, $file->content);
 
@@ -120,5 +115,17 @@ class InitConfigCliHelper
     {
         $prefix = str_repeat("\t", $indentLevel);
         $this->output->writeln("$prefix<fg=red>✗</> $message");
+    }
+
+    public function userWantsToWriteConfigFile(GadgetConfigurationFile $defaultConfigFile)
+    {
+        $configFilePath = $this->projectPath . '/' . $file->filename;
+        if (file_exists($configFilePath)) {
+            $this->success("config file " . $defaultConfigFile->filename . " already exists", 1);
+
+            return $this->askConfirmation('do you want to overwrite it?', 1, $defaultAnswer = false);
+        }
+
+        return $this->askConfirmation("use SimpSpector's default configuration file for $key", 1);
     }
 }
