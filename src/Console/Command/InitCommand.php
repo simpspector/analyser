@@ -75,7 +75,7 @@ class InitCommand extends Command
                 continue;
             }
 
-            if (! $helper->userWantsToWriteConfigFile($defaultConfigFile)) {
+            if (! $helper->userWantsToWriteConfigFile($defaultConfigFile, $key)) {
                 continue;
             }
 

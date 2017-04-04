@@ -117,15 +117,15 @@ class InitConfigCliHelper
         $this->output->writeln("$prefix<fg=red>✗</> $message");
     }
 
-    public function userWantsToWriteConfigFile(GadgetConfigurationFile $defaultConfigFile)
+    public function userWantsToWriteConfigFile(ConfigurationFile $defaultConfigFile, $binary)
     {
-        $configFilePath = $this->projectPath . '/' . $file->filename;
+        $configFilePath = $this->projectPath . '/' . $defaultConfigFile->filename;
         if (file_exists($configFilePath)) {
             $this->success("config file " . $defaultConfigFile->filename . " already exists", 1);
 
             return $this->askConfirmation('do you want to overwrite it?', 1, $defaultAnswer = false);
         }
 
-        return $this->askConfirmation("use SimpSpector's default configuration file for $key", 1);
+        return $this->askConfirmation("use SimpSpector's default configuration file for $binary", 1);
     }
 }
