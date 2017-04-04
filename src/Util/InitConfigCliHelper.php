@@ -2,7 +2,7 @@
 
 namespace SimpSpector\Analyser\Util;
 
-use SimpSpector\Analyser\Struct\GadgetConfigurationFile;
+use SimpSpector\Analyser\Gadget\ConfigurationFile;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -77,7 +77,7 @@ class InitConfigCliHelper
         $this->success(".simpspector.yml config file written");
     }
 
-    public function writeGadgetConfigFile(GadgetConfigurationFile $file)
+    public function writeGadgetConfigFile(ConfigurationFile $file)
     {
         $this->filesystem->dumpFile($file->filename, $file->content);
 

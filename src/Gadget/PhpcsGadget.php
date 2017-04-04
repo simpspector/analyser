@@ -5,7 +5,7 @@ namespace SimpSpector\Analyser\Gadget;
 use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Logger\AbstractLogger;
 use SimpSpector\Analyser\Result;
-use SimpSpector\Analyser\Struct\GadgetConfigurationFile;
+use SimpSpector\Analyser\Gadget\ConfigurationFile;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
@@ -86,7 +86,7 @@ class PhpcsGadget extends AbstractGadget
 </ruleset>
 XML;
 
-        return new GadgetConfigurationFile('.phpcs.xml', $xml);
+        return new ConfigurationFile('.phpcs.xml', $xml);
     }
 
     /**

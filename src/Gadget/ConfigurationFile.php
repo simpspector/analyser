@@ -4,9 +4,9 @@
  * @author Tobias Olry <tobias.olry@gmail.com>
  */
 
-namespace SimpSpector\Analyser\Struct;
+namespace SimpSpector\Analyser\Gadget;
 
-class GadgetConfigurationFile
+class ConfigurationFile
 {
     /**
      * @var string
