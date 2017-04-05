@@ -55,11 +55,27 @@ class TwigLintGadget extends AbstractGadget
     }
 
     /**
-     * @return string
+     * @see GadgetInterface::getName()
      */
     public function getName()
     {
         return 'twig-lint';
+    }
+
+    /**
+     * @see GadgetInterface::getDescription()
+     */
+    public function getDescription()
+    {
+        return 'Twig Lint Check';
+    }
+
+    /**
+     * @see GadgetInterface::getDefaultConfigurationFile()
+     */
+    public function getDefaultConfigurationFile()
+    {
+        return null;
     }
 
     /**

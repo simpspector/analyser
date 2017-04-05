@@ -47,4 +47,21 @@ abstract class AbstractGadget implements GadgetInterface
 
         return $process->getOutput();
     }
+
+    /**
+     * @param array $arguments
+     * @param string $substring
+     *
+     * @return bool
+     */
+    protected function argumentsContain(array $arguments, $substring)
+    {
+        foreach ($arguments as $argument) {
+            if (stristr($argument, $substring) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

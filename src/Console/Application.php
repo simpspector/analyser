@@ -5,6 +5,7 @@ namespace SimpSpector\Analyser\Console;
 use SimpSpector\Analyser\Analyser;
 use SimpSpector\Analyser\Console\Command\AnalyseCommand;
 use SimpSpector\Analyser\Console\Command\DiffCommand;
+use SimpSpector\Analyser\Console\Command\InitCommand;
 use SimpSpector\Analyser\Console\Command\ReferenceCommand;
 use SimpSpector\Analyser\DependencyInjection\ContainerConfigurator;
 use SimpSpector\Analyser\Diff\Calculator;
@@ -35,6 +36,7 @@ class Application extends BaseApplication
 
         $this->add(new AnalyseCommand($analyser, $formatter));
         $this->add(new DiffCommand($importer, new Calculator(), $analyser->getExecutor(), $analyser->getLoader()));
+        $this->add(new InitCommand($repository));
     }
 
     /**

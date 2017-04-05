@@ -5,6 +5,7 @@ namespace SimpSpector\Analyser\Gadget;
 use SimpSpector\Analyser\Issue;
 use SimpSpector\Analyser\Logger\AbstractLogger;
 use SimpSpector\Analyser\Result;
+use SimpSpector\Analyser\Gadget\ConfigurationFile;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
@@ -32,6 +33,15 @@ class PhpcsGadget extends AbstractGadget
      */
     public function run($path, array $arguments, AbstractLogger $logger)
     {
+        if (empty($arguments)) {
+            $arguments[] = 'src/';
+        }
+
+        $defaultConfigFile = $path . '/' . $this->getDefaultConfigurationFile()->filename;
+        if (file_exists($defaultConfigFile) && ! $this->argumentsContain($arguments, '--standard=')) {
+            $arguments[] = '--standard=' . $this->getDefaultConfigurationFile()->filename;
+        }
+
         $output = $this->execute($path, array_merge([$this->bin, '--report=csv'], $arguments), $logger, [0, 1]);
 
         $rawIssues = $this->convertFromCsvToArray($output);
@@ -45,11 +55,38 @@ class PhpcsGadget extends AbstractGadget
     }
 
     /**
-     * @return string
+     * @see GadgetInterface::getName()
      */
     public function getName()
     {
         return 'phpcs';
+    }
+
+    /**
+     * @see GadgetInterface::getDescription()
+     */
+    public function getDescription()
+    {
+        return 'PHP CodeSniffer';
+    }
+
+    /**
+     * @see GadgetInterface::getDefaultConfigurationFile()
+     */
+    public function getDefaultConfigurationFile()
+    {
+        $xml = <<<XML
+<?xml version="1.0"?>
+<!-- for more information visit https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
+<ruleset name="Simpspector PHPCS Template">
+    <description>The PSR-2 coding standard.</description>
+    <rule ref="PSR2"/>
+
+    <file>src</file>
+</ruleset>
+XML;
+
+        return new ConfigurationFile('.phpcs.xml', $xml);
     }
 
     /**

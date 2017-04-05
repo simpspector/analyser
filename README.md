@@ -7,6 +7,10 @@ this is the analyser component to simplethings/simpspector - all the static code
 ## Usage
 
 ``` bash
+# initialize .simpspector.yml
+# run init and follow instructions
+bin/simpspector init /path/to/project
+# run analyser on your project
 bin/simpspector analyse /path/to/project --format=detail
 ```
 
